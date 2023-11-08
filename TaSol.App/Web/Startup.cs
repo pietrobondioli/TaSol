@@ -27,11 +27,14 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
         // Configure settings DI
-        services.Configure<ApiSettings>(Configuration.GetSection(ApiSettingsSection));
-        services.Configure<ConnectionStrings>(Configuration.GetSection(ConnectionStringsSection));
-        services.Configure<JwtSettings>(Configuration.GetSection(JwtSettingsSection));
+        var apiSettings = Configuration.GetSection(ApiSettingsSection);
+        services.Configure<ApiSettings>(apiSettings);
+        var connectionStrings = Configuration.GetSection(ConnectionStringsSection);
+        services.Configure<ConnectionStrings>(connectionStrings);
+        var jwtSettings = Configuration.GetSection(JwtSettingsSection);
+        services.Configure<JwtSettings>(jwtSettings);
 
-        services.AddInfrastructureServices(Configuration, Env);
+        services.AddInfrastructureServices(Configuration, Env, connectionStrings.Get<ConnectionStrings>());
         services.AddApplicationServices();
 
         services.AddHttpContextAccessor();

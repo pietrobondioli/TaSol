@@ -8,24 +8,27 @@ public class LoggingBehaviour<TRequest> : IRequestPreProcessor<TRequest> where T
 {
     private readonly ILogger _logger;
     private readonly IUser _user;
-    private readonly IIdentityService _identityService;
+    private readonly IApplicationDbContext _context;
 
-    public LoggingBehaviour(ILogger<TRequest> logger, IUser user, IIdentityService identityService)
+    public LoggingBehaviour(ILogger<TRequest> logger, IUser user, IApplicationDbContext context)
     {
         _logger = logger;
         _user = user;
-        _identityService = identityService;
+        _context = context;
     }
 
     public async Task Process(TRequest request, CancellationToken cancellationToken)
     {
         var requestName = typeof(TRequest).Name;
-        var userId = _user.Id ?? string.Empty;
+        var userId = _user.Id ?? default;
         string? userName = string.Empty;
 
-        if (!string.IsNullOrEmpty(userId))
+        if (!userId.Equals(default))
         {
-            userName = await _identityService.GetUserNameAsync(userId);
+            userName = await _context.Users
+                .Where(u => u.Id == userId)
+                .Select(u => u.UserName)
+                .FirstOrDefaultAsync(cancellationToken);
         }
 
         _logger.LogInformation("CleanArchitecture Request: {Name} {@UserId} {@UserName} {@Request}",

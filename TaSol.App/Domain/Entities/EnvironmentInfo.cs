@@ -4,7 +4,7 @@ namespace Domain.Entities;
 
 public class EnvironmentInfo : BaseAuditableEntity
 {
-    public int Temperature { get; set; }
+    public double Temperature { get; set; }
 
     public int Humidity { get; set; }
 
@@ -12,7 +12,7 @@ public class EnvironmentInfo : BaseAuditableEntity
 
     public int RainLevel { get; set; }
 
-    public int DeviceId { get; set; }
+    public long DeviceId { get; set; }
 
     [ForeignKey(nameof(DeviceId))] public Device Device { get; set; } = null!;
 }

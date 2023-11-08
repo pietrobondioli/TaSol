@@ -4,7 +4,7 @@ namespace Domain.Entities;
 
 public class UserEmailResetToken : BaseUniqueConsumableToken
 {
-    public int UserId { get; set; }
+    public long UserId { get; set; }
     
     [ForeignKey(nameof(UserId))] public User User { get; set; } = null!;
 
