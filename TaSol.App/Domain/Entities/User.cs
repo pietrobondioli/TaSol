@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Domain.Entities;
 
 public class User : BaseAuditableEntity
@@ -22,19 +24,18 @@ public class User : BaseAuditableEntity
 
     public bool IsVerified { get; set; }
 
-    public DateTimeOffset? LastLoggedIn { get; set; }
+    public long MetadataId { get; set; }
 
-    public DateTimeOffset? LastActive { get; set; }
-
-    public DateTimeOffset? LastPasswordChanged { get; set; }
-
-    public DateTimeOffset? LastLockout { get; set; }
-
-    public DateTimeOffset? LastChangedEmail { get; set; }
+    [ForeignKey(nameof(MetadataId))] public UserMetadata Metadata { get; set; } = null!;
 
     public ICollection<UserPasswordResetToken> PasswordResetTokens { get; set; }
 
     public ICollection<UserEmailResetToken> EmailResetTokens { get; set; }
 
     public ICollection<UserEmailVerificationToken> EmailVerificationTokens { get; set; }
+
+    public bool IsInRole(string role)
+    {
+        return Role.ToString() == role;
+    }
 }
