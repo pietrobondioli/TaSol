@@ -34,9 +34,23 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Users\Commands\" />
+      <Folder Include="Devices\Commands\" />
+      <Folder Include="Devices\Queries\" />
+      <Folder Include="EnvironmentInfos\Commands\" />
+      <Folder Include="EnvironmentInfos\Queries\" />
+      <Folder Include="Locations\Commands\" />
+      <Folder Include="Locations\Queries\" />
+      <Folder Include="Users\Commands\Authenticate\" />
+      <Folder Include="Users\Commands\ChangeEmail\" />
+      <Folder Include="Users\Commands\ChangePassword\" />
+      <Folder Include="Users\Commands\ReqEmailChange\" />
+      <Folder Include="Users\Commands\ReqNewVerificationToken\" />
+      <Folder Include="Users\Commands\ReqPasswordChange\" />
+      <Folder Include="Users\Commands\Update\" />
+      <Folder Include="Users\Commands\VerifyAccount\" />
       <Folder Include="Users\EventHandlers\" />
-      <Folder Include="Users\Queries\" />
+      <Folder Include="Users\Queries\GetMe\" />
+      <Folder Include="Users\Queries\GetUserById\" />
     </ItemGroup>
 
 </Project>
