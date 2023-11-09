@@ -16,7 +16,7 @@ public class User : BaseAuditableEntity
 
     public string PhoneNumber { get; set; }
 
-    public Roles Role { get; set; }
+    public string Role { get; set; }
 
     public string? RefreshToken { get; set; }
 
