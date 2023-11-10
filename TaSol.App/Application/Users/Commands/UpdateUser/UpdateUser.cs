@@ -20,6 +20,6 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, long>
     public async Task<long> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
     {
         // Handler logic goes here
-        return default; // Replace with actual return
+        throw new NotImplementedException(); // Replace with actual return
     }
 }

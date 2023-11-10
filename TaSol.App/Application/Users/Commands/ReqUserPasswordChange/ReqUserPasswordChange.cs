@@ -20,6 +20,6 @@ public class ReqUserPasswordChangeCommandHandler : IRequestHandler<ReqUserPasswo
     public async Task<long> Handle(ReqUserPasswordChangeCommand request, CancellationToken cancellationToken)
     {
         // Handler logic goes here
-        return default; // Replace with actual return
+        throw new NotImplementedException(); // Replace with actual return
     }
 }

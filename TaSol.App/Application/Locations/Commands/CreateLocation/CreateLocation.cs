@@ -20,6 +20,6 @@ public class CreateLocationCommandHandler : IRequestHandler<CreateLocationComman
     public async Task<long> Handle(CreateLocationCommand request, CancellationToken cancellationToken)
     {
         // Handler logic goes here
-        return default; // Replace with actual return
+        throw new NotImplementedException(); // Replace with actual return
     }
 }

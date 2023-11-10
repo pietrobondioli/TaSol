@@ -20,6 +20,6 @@ public class UpdateDeviceCommandHandler : IRequestHandler<UpdateDeviceCommand, l
     public async Task<long> Handle(UpdateDeviceCommand request, CancellationToken cancellationToken)
     {
         // Handler logic goes here
-        return default; // Replace with actual return
+        throw new NotImplementedException(); // Replace with actual return
     }
 }
