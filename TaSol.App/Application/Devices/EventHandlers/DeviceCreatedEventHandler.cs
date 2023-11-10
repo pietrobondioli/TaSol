@@ -14,7 +14,7 @@ public class DeviceCreatedEventHandler : INotificationHandler<DeviceCreatedEvent
 
     public Task Handle(DeviceCreatedEvent notification, CancellationToken cancellationToken)
     {
-        _logger.LogInformation("CleanArchitecture Domain Event: {DomainEvent}", notification.GetType().Name);
+        _logger.LogInformation("Domain Event: {DomainEvent}", notification.GetType().Name);
 
         return Task.CompletedTask;
     }
