@@ -1,4 +1,4 @@
-namespace Application.Commands.Commands.ReqNewUserVerificationToken;
+namespace Application.Users.Commands.ReqNewUserVerificationToken;
 
 public class ReqNewUserVerificationTokenCommandValidator : AbstractValidator<ReqNewUserVerificationTokenCommand>
 {

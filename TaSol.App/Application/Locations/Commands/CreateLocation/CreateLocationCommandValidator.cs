@@ -1,4 +1,4 @@
-namespace Application.Commands.Commands.CreateLocation;
+namespace Application.Locations.Commands.CreateLocation;
 
 public class CreateLocationCommandValidator : AbstractValidator<CreateLocationCommand>
 {

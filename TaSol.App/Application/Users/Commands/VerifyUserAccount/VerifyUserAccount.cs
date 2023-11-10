@@ -1,7 +1,7 @@
 using Application.Common.Interfaces;
 using Domain.Entities;
 
-namespace Application.Commands.Commands.VerifyUserAccount;
+namespace Application.Users.Commands.VerifyUserAccount;
 
 public record VerifyUserAccountCommand : IRequest<long>
 {

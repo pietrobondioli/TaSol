@@ -1,4 +1,4 @@
-namespace Application.Commands.Commands.DeleteDevice;
+namespace Application.Devices.Commands.DeleteDevice;
 
 public class DeleteDeviceCommandValidator : AbstractValidator<DeleteDeviceCommand>
 {

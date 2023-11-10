@@ -1,7 +1,7 @@
 using Application.Common.Interfaces;
 using Domain.Entities;
 
-namespace Application.Commands.Commands.CreateDevice;
+namespace Application.Devices.Commands.CreateDevice;
 
 public record CreateDeviceCommand : IRequest<long>
 {

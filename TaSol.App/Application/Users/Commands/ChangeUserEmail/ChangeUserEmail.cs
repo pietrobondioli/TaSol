@@ -1,7 +1,7 @@
 using Application.Common.Interfaces;
 using Domain.Entities;
 
-namespace Application.Commands.Commands.ChangeUserEmail;
+namespace Application.Users.Commands.ChangeUserEmail;
 
 public record ChangeUserEmailCommand : IRequest<long>
 {

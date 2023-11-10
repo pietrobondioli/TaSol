@@ -1,7 +1,7 @@
 using Application.Common.Interfaces;
 using Domain.Entities;
 
-namespace Application.Commands.Commands.UpdateLocation;
+namespace Application.Locations.Commands.UpdateLocation;
 
 public record UpdateLocationCommand : IRequest<long>
 {

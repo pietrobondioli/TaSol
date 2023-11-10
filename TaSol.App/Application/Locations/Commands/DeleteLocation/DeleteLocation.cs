@@ -1,7 +1,7 @@
 using Application.Common.Interfaces;
 using Domain.Entities;
 
-namespace Application.Commands.Commands.DeleteLocation;
+namespace Application.Locations.Commands.DeleteLocation;
 
 public record DeleteLocationCommand : IRequest<long>
 {

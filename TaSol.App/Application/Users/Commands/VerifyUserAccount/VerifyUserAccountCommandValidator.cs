@@ -1,4 +1,4 @@
-namespace Application.Commands.Commands.VerifyUserAccount;
+namespace Application.Users.Commands.VerifyUserAccount;
 
 public class VerifyUserAccountCommandValidator : AbstractValidator<VerifyUserAccountCommand>
 {
