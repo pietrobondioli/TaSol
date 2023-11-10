@@ -29,7 +29,7 @@ public class ${commandName}CommandHandler : IRequestHandler<${commandName}Comman
     public async Task<long> Handle(${commandName}Command request, CancellationToken cancellationToken)
     {
         // Handler logic goes here
-        return default; // Replace with actual return
+        throw new NotImplementedException(); // Replace with actual return
     }
 }
 EOF
