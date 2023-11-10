@@ -1,4 +1,4 @@
-namespace Application.Commands.Commands.CreateStaticEnvironmentInfo;
+namespace Application.EnvironmentInfos.Commands.CreateStaticEnvironmentInfo;
 
 public class CreateStaticEnvironmentInfoCommandValidator : AbstractValidator<CreateStaticEnvironmentInfoCommand>
 {

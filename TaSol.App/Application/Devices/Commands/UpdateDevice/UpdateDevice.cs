@@ -1,7 +1,7 @@
 using Application.Common.Interfaces;
 using Domain.Entities;
 
-namespace Application.Commands.Commands.UpdateDevice;
+namespace Application.Devices.Commands.UpdateDevice;
 
 public record UpdateDeviceCommand : IRequest<long>
 {

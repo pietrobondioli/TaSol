@@ -1,7 +1,7 @@
 using Application.Common.Interfaces;
 using Domain.Entities;
 
-namespace Application.Commands.Commands.ReqNewUserVerificationToken;
+namespace Application.Users.Commands.ReqNewUserVerificationToken;
 
 public record ReqNewUserVerificationTokenCommand : IRequest<long>
 {

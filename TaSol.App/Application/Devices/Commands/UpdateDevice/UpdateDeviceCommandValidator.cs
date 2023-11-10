@@ -1,4 +1,4 @@
-namespace Application.Commands.Commands.UpdateDevice;
+namespace Application.Devices.Commands.UpdateDevice;
 
 public class UpdateDeviceCommandValidator : AbstractValidator<UpdateDeviceCommand>
 {

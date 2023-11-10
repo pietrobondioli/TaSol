@@ -1,4 +1,4 @@
-namespace Application.Commands.Commands.DeleteLocation;
+namespace Application.Locations.Commands.DeleteLocation;
 
 public class DeleteLocationCommandValidator : AbstractValidator<DeleteLocationCommand>
 {

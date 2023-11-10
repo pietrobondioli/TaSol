@@ -1,4 +1,4 @@
-namespace Application.Commands.Commands.AuthenticateUser;
+namespace Application.Users.Commands.AuthenticateUser;
 
 public class AuthenticateUserCommandValidator : AbstractValidator<AuthenticateUserCommand>
 {

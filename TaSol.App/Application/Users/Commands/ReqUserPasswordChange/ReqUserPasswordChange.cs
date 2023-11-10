@@ -1,7 +1,7 @@
 using Application.Common.Interfaces;
 using Domain.Entities;
 
-namespace Application.Commands.Commands.ReqUserPasswordChange;
+namespace Application.Users.Commands.ReqUserPasswordChange;
 
 public record ReqUserPasswordChangeCommand : IRequest<long>
 {

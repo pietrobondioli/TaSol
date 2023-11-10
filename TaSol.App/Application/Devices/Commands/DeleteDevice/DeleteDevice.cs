@@ -1,7 +1,7 @@
 using Application.Common.Interfaces;
 using Domain.Entities;
 
-namespace Application.Commands.Commands.DeleteDevice;
+namespace Application.Devices.Commands.DeleteDevice;
 
 public record DeleteDeviceCommand : IRequest<long>
 {

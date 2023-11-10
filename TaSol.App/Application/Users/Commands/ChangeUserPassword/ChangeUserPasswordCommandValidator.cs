@@ -1,4 +1,4 @@
-namespace Application.Commands.Commands.ChangeUserPassword;
+namespace Application.Users.Commands.ChangeUserPassword;
 
 public class ChangeUserPasswordCommandValidator : AbstractValidator<ChangeUserPasswordCommand>
 {
