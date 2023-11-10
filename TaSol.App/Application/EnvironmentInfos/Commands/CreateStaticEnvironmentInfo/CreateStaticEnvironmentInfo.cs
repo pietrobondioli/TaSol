@@ -1,0 +1,25 @@
+using Application.Common.Interfaces;
+using Domain.Entities;
+
+namespace Application.Commands.Commands.CreateStaticEnvironmentInfo;
+
+public record CreateStaticEnvironmentInfoCommand : IRequest<long>
+{
+    // Properties go here
+}
+
+public class CreateStaticEnvironmentInfoCommandHandler : IRequestHandler<CreateStaticEnvironmentInfoCommand, long>
+{
+    private readonly IApplicationDbContext _context;
+
+    public CreateStaticEnvironmentInfoCommandHandler(IApplicationDbContext context)
+    {
+        _context = context;
+    }
+
+    public async Task<long> Handle(CreateStaticEnvironmentInfoCommand request, CancellationToken cancellationToken)
+    {
+        // Handler logic goes here
+        return default; // Replace with actual return
+    }
+}
