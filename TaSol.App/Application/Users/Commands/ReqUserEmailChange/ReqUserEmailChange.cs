@@ -20,6 +20,6 @@ public class ReqUserEmailChangeCommandHandler : IRequestHandler<ReqUserEmailChan
     public async Task<long> Handle(ReqUserEmailChangeCommand request, CancellationToken cancellationToken)
     {
         // Handler logic goes here
-        return default; // Replace with actual return
+        throw new NotImplementedException(); // Replace with actual return
     }
 }

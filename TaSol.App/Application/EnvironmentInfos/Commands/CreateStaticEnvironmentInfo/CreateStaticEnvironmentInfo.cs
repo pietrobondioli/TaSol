@@ -20,6 +20,6 @@ public class CreateStaticEnvironmentInfoCommandHandler : IRequestHandler<CreateS
     public async Task<long> Handle(CreateStaticEnvironmentInfoCommand request, CancellationToken cancellationToken)
     {
         // Handler logic goes here
-        return default; // Replace with actual return
+        throw new NotImplementedException(); // Replace with actual return
     }
 }

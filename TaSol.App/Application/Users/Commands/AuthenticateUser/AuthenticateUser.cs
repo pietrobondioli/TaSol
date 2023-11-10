@@ -20,6 +20,6 @@ public class AuthenticateUserCommandHandler : IRequestHandler<AuthenticateUserCo
     public async Task<long> Handle(AuthenticateUserCommand request, CancellationToken cancellationToken)
     {
         // Handler logic goes here
-        return default; // Replace with actual return
+        throw new NotImplementedException(); // Replace with actual return
     }
 }

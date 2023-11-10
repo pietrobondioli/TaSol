@@ -20,6 +20,6 @@ public class DeleteDeviceCommandHandler : IRequestHandler<DeleteDeviceCommand, l
     public async Task<long> Handle(DeleteDeviceCommand request, CancellationToken cancellationToken)
     {
         // Handler logic goes here
-        return default; // Replace with actual return
+        throw new NotImplementedException(); // Replace with actual return
     }
 }

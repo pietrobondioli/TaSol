@@ -20,6 +20,6 @@ public class ReqNewUserVerificationTokenCommandHandler : IRequestHandler<ReqNewU
     public async Task<long> Handle(ReqNewUserVerificationTokenCommand request, CancellationToken cancellationToken)
     {
         // Handler logic goes here
-        return default; // Replace with actual return
+        throw new NotImplementedException(); // Replace with actual return
     }
 }
