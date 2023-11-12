@@ -1,5 +1,3 @@
-using Application.Common.Interfaces;
-
 namespace Application.Queries.Queries.GetLightLevel;
 
 public record GetLightLevelQuery : IRequest<GetLightLevelDto>

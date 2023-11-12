@@ -9,7 +9,9 @@ namespace Infrastructure.Data;
 
 public class ApplicationDbContext : DbContext, IApplicationDbContext
 {
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+    {
+    }
 
     public DbSet<User> Users => Set<User>();
 
@@ -33,7 +35,8 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
 
         base.OnModelCreating(builder);
 
-        foreach (var ClrType in builder.Model.GetEntityTypes().Where(e => typeof(BaseAuditableEntity).IsAssignableFrom(e.ClrType)).Select(e => e.ClrType))
+        foreach (var ClrType in builder.Model.GetEntityTypes()
+                     .Where(e => typeof(BaseAuditableEntity).IsAssignableFrom(e.ClrType)).Select(e => e.ClrType))
         {
             var parameter = Expression.Parameter(ClrType, "e");
             var body = Expression.MakeMemberAccess(parameter, ClrType.GetProperty("IsDeleted"));

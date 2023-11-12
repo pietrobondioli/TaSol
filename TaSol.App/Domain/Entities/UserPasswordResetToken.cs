@@ -5,12 +5,12 @@ namespace Domain.Entities;
 public class UserPasswordResetToken : BaseUniqueConsumableToken
 {
     public long UserId { get; set; }
-    
+
     [ForeignKey(nameof(UserId))] public User User { get; set; } = null!;
 
     public static UserPasswordResetToken Create(User user, int expirationInMinutes = 30)
     {
-        return new()
+        return new UserPasswordResetToken
         {
             UserId = user.Id,
             Token = Guid.NewGuid().ToString(),

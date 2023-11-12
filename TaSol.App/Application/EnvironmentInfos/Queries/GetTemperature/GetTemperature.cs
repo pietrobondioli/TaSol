@@ -1,5 +1,3 @@
-using Application.Common.Interfaces;
-
 namespace Application.Queries.Queries.GetTemperature;
 
 public record GetTemperatureQuery : IRequest<GetTemperatureDto>

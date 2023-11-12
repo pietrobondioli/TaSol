@@ -1,5 +1,4 @@
-﻿using Application.Common.Interfaces;
-using Domain.Common;
+﻿using Domain.Common;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -39,16 +38,11 @@ public class AuditableEntityInterceptor : SaveChangesInterceptor
         var utcNow = DateTimeOffset.UtcNow;
         foreach (var entry in context.ChangeTracker.Entries<BaseAuditableEntity>())
         {
-            if (entry.State == EntityState.Added)
-            {
-                entry.Entity.SetCreated(_user.Id);
-            }
+            if (entry.State == EntityState.Added) entry.Entity.SetCreated(_user.Id);
 
             if (entry.State == EntityState.Added || entry.State == EntityState.Modified ||
                 entry.HasChangedOwnedEntities())
-            {
                 entry.Entity.SetLastModified(_user.Id);
-            }
 
             if (entry.State == EntityState.Deleted)
             {
@@ -61,9 +55,11 @@ public class AuditableEntityInterceptor : SaveChangesInterceptor
 
 public static class Extensions
 {
-    public static bool HasChangedOwnedEntities(this EntityEntry entry) =>
-        entry.References.Any(r =>
+    public static bool HasChangedOwnedEntities(this EntityEntry entry)
+    {
+        return entry.References.Any(r =>
             r.TargetEntry != null &&
             r.TargetEntry.Metadata.IsOwned() &&
             (r.TargetEntry.State == EntityState.Added || r.TargetEntry.State == EntityState.Modified));
+    }
 }

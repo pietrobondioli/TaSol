@@ -1,15 +1,13 @@
 ﻿using System.Reflection;
-using Application.Common.Exceptions;
-using Application.Common.Interfaces;
 using Application.Common.Security;
-using MediatR;
 
 namespace Application.Common.Behaviours;
 
-public class AuthorizationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull
+public class AuthorizationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    where TRequest : notnull
 {
-    private readonly IUser _user;
     private readonly IApplicationDbContext _context;
+    private readonly IUser _user;
 
     public AuthorizationBehaviour(
         IUser user,
@@ -19,17 +17,15 @@ public class AuthorizationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRe
         _context = context;
     }
 
-    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next,
+        CancellationToken cancellationToken)
     {
         var authorizeAttributes = request.GetType().GetCustomAttributes<AuthorizeAttribute>();
 
         if (authorizeAttributes.Any())
         {
             // Must be authenticated user
-            if (_user.Id == null)
-            {
-                throw new UnauthorizedAccessException();
-            }
+            if (_user.Id == null) throw new UnauthorizedAccessException();
 
             // Role-based authorization
             var authorizeAttributesWithRoles = authorizeAttributes.Where(a => !string.IsNullOrWhiteSpace(a.Roles));
@@ -39,7 +35,6 @@ public class AuthorizationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRe
                 var authorized = false;
 
                 foreach (var roles in authorizeAttributesWithRoles.Select(a => a.Roles.Split(',')))
-                {
                     foreach (var role in roles)
                     {
                         var user = await _context.Users.FindAsync(_user.Id);
@@ -49,13 +44,9 @@ public class AuthorizationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRe
                             break;
                         }
                     }
-                }
 
                 // Must be a member of at least one role in roles
-                if (!authorized)
-                {
-                    throw new ForbiddenAccessException();
-                }
+                if (!authorized) throw new ForbiddenAccessException();
             }
         }
 

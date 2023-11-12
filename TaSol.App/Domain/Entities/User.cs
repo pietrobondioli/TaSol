@@ -36,6 +36,6 @@ public class User : BaseAuditableEntity
 
     public bool IsInRole(string role)
     {
-        return Role.ToString() == role;
+        return Role == role;
     }
 }

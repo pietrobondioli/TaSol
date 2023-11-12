@@ -3,7 +3,8 @@ using Microsoft.Extensions.Logging;
 
 namespace Application.Users.EventHandlers;
 
-public class UserRequestedNewVerificationTokenEventHandler : INotificationHandler<UserRequestedNewVerificationTokenEvent>
+public class
+    UserRequestedNewVerificationTokenEventHandler : INotificationHandler<UserRequestedNewVerificationTokenEvent>
 {
     private readonly ILogger<UserRequestedNewVerificationTokenEventHandler> _logger;
 

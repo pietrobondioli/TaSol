@@ -4,12 +4,10 @@ namespace Domain.Common;
 
 public abstract class BaseEntity
 {
+    private readonly List<BaseEvent> _domainEvents = new();
     public long Id { get; set; }
 
-    private readonly List<BaseEvent> _domainEvents = new();
-
-    [NotMapped]
-    public IReadOnlyCollection<BaseEvent> DomainEvents => _domainEvents.AsReadOnly();
+    [NotMapped] public IReadOnlyCollection<BaseEvent> DomainEvents => _domainEvents.AsReadOnly();
 
     public void AddDomainEvent(BaseEvent domainEvent)
     {

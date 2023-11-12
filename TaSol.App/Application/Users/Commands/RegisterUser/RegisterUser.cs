@@ -1,4 +1,3 @@
-using Application.Common.Interfaces;
 using Domain.Constants;
 using Domain.Entities;
 
@@ -30,7 +29,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, l
 
     public async Task<long> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
-        var entity = new User()
+        var entity = new User
         {
             UserName = request.UserName,
             PasswordHash = request.Password,

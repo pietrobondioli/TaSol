@@ -1,14 +1,13 @@
-﻿using Application.Common.Interfaces;
-using MediatR.Pipeline;
+﻿using MediatR.Pipeline;
 using Microsoft.Extensions.Logging;
 
 namespace Application.Common.Behaviours;
 
 public class LoggingBehaviour<TRequest> : IRequestPreProcessor<TRequest> where TRequest : notnull
 {
+    private readonly IApplicationDbContext _context;
     private readonly ILogger _logger;
     private readonly IUser _user;
-    private readonly IApplicationDbContext _context;
 
     public LoggingBehaviour(ILogger<TRequest> logger, IUser user, IApplicationDbContext context)
     {
@@ -21,15 +20,13 @@ public class LoggingBehaviour<TRequest> : IRequestPreProcessor<TRequest> where T
     {
         var requestName = typeof(TRequest).Name;
         var userId = _user.Id ?? default;
-        string? userName = string.Empty;
+        var userName = string.Empty;
 
         if (!userId.Equals(default))
-        {
             userName = await _context.Users
                 .Where(u => u.Id == userId)
                 .Select(u => u.UserName)
                 .FirstOrDefaultAsync(cancellationToken);
-        }
 
         _logger.LogInformation("CleanArchitecture Request: {Name} {@UserId} {@UserName} {@Request}",
             requestName, userId, userName, request);

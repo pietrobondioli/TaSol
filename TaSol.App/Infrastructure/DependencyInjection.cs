@@ -23,9 +23,7 @@ public static class DependencyInjection
         IConfiguration configuration, IWebHostEnvironment env, ConnectionStrings connectionStrings)
     {
         if (connectionStrings.Database.IsNullOrEmpty())
-        {
             throw new ArgumentException("Database connection string is not set");
-        }
 
         services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
         services.AddScoped<ISaveChangesInterceptor, DispatchDomainEventsInterceptor>();
@@ -49,10 +47,7 @@ public static class DependencyInjection
     private static void ConfigureSerilog(IServiceCollection services, IConfiguration configuration,
         IWebHostEnvironment env)
     {
-        if (env.IsDevelopment())
-        {
-            SelfLog.Enable(Console.Error);
-        }
+        if (env.IsDevelopment()) SelfLog.Enable(Console.Error);
 
         services.AddSingleton(new LoggerConfiguration()
             .ReadFrom.Configuration(configuration)

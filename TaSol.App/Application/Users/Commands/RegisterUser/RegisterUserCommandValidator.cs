@@ -4,7 +4,6 @@ public class RegisterCommandValidator : AbstractValidator<RegisterUserCommand>
 {
     public RegisterCommandValidator()
     {
-
         RuleFor(x => x.UserName)
             .NotEmpty()
             .MaximumLength(50);

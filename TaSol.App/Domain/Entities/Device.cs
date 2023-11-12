@@ -10,9 +10,11 @@ public class Device : BaseAuditableEntity
 
     public string AuthToken { get; set; } = null!;
 
+    public string LocationId { get; set; } = null!;
+
     public Location Location { get; set; } = null!;
 
-    public int OwnerId { get; set; }
+    public long OwnerId { get; set; }
 
     [ForeignKey(nameof(OwnerId))] public virtual User Owner { get; set; } = null!;
 

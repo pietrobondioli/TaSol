@@ -1,4 +1,3 @@
-using System.Text;
 using Application;
 using Domain.Settings;
 using Infrastructure;

@@ -1,5 +1,3 @@
-using Application.Common.Interfaces;
-
 namespace Application.Queries.Queries.GetUsersWithPagination;
 
 public record GetUsersWithPaginationQuery : IRequest<GetUsersWithPaginationDto>
@@ -7,7 +5,8 @@ public record GetUsersWithPaginationQuery : IRequest<GetUsersWithPaginationDto>
     // Properties go here
 }
 
-public class GetUsersWithPaginationQueryHandler : IRequestHandler<GetUsersWithPaginationQuery, GetUsersWithPaginationDto>
+public class
+    GetUsersWithPaginationQueryHandler : IRequestHandler<GetUsersWithPaginationQuery, GetUsersWithPaginationDto>
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
@@ -18,7 +17,8 @@ public class GetUsersWithPaginationQueryHandler : IRequestHandler<GetUsersWithPa
         _mapper = mapper;
     }
 
-    public async Task<GetUsersWithPaginationDto> Handle(GetUsersWithPaginationQuery request, CancellationToken cancellationToken)
+    public async Task<GetUsersWithPaginationDto> Handle(GetUsersWithPaginationQuery request,
+        CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
