@@ -1,5 +1,3 @@
-using Application.Common.Interfaces;
-
 namespace Application.Queries.Queries.GetLocationsWithPagination;
 
 public record GetLocationsWithPaginationQuery : IRequest<GetLocationsWithPaginationDto>
@@ -7,7 +5,9 @@ public record GetLocationsWithPaginationQuery : IRequest<GetLocationsWithPaginat
     // Properties go here
 }
 
-public class GetLocationsWithPaginationQueryHandler : IRequestHandler<GetLocationsWithPaginationQuery, GetLocationsWithPaginationDto>
+public class
+    GetLocationsWithPaginationQueryHandler : IRequestHandler<GetLocationsWithPaginationQuery,
+        GetLocationsWithPaginationDto>
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
@@ -18,7 +18,8 @@ public class GetLocationsWithPaginationQueryHandler : IRequestHandler<GetLocatio
         _mapper = mapper;
     }
 
-    public async Task<GetLocationsWithPaginationDto> Handle(GetLocationsWithPaginationQuery request, CancellationToken cancellationToken)
+    public async Task<GetLocationsWithPaginationDto> Handle(GetLocationsWithPaginationQuery request,
+        CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }

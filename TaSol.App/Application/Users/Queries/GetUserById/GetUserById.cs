@@ -1,5 +1,3 @@
-using Application.Common.Interfaces;
-
 namespace Application.Users.Queries.GetUserById;
 
 public record GetUserByIdQuery : IRequest<UserDto>

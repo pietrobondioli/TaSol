@@ -1,5 +1,3 @@
-using Application.Common.Interfaces;
-
 namespace Application.Queries.Queries.GetMe;
 
 public record GetMeQuery : IRequest<GetMeDto>

@@ -1,6 +1,3 @@
-using Application.Common.Interfaces;
-using Domain.Entities;
-
 namespace Application.Users.Commands.UpdateUser;
 
 public record UpdateUserCommand : IRequest<long>

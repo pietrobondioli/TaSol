@@ -9,9 +9,9 @@ public static class UserClaims
     {
         var claims = new List<Claim>
         {
-            new Claim(Types.Id, user.Id.ToString()),
-            new Claim(Types.UserName, user.UserName),
-            new Claim(Types.Role, user.Role.ToString()),
+            new(Types.Id, user.Id.ToString()),
+            new(Types.UserName, user.UserName),
+            new(Types.Role, user.Role)
         };
 
         return claims;

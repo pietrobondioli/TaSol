@@ -1,5 +1,3 @@
-using Application.Common.Interfaces;
-
 namespace Application.Queries.Queries.GetDeviceById;
 
 public record GetDeviceByIdQuery : IRequest<GetDeviceByIdDto>

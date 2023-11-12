@@ -27,9 +27,6 @@ public abstract class BaseUniqueConsumableToken : BaseAuditableEntity
 
     public void Revoke()
     {
-        if (IsActive)
-        {
-            RevokedAt = DateTimeOffset.UtcNow;
-        }
+        if (IsActive) RevokedAt = DateTimeOffset.UtcNow;
     }
 }

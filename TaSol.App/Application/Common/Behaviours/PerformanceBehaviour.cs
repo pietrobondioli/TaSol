@@ -1,16 +1,14 @@
 ﻿using System.Diagnostics;
-using Application.Common.Interfaces;
-using MediatR;
 using Microsoft.Extensions.Logging;
 
 namespace Application.Common.Behaviours;
 
 public class PerformanceBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull
 {
-    private readonly Stopwatch _timer;
-    private readonly ILogger<TRequest> _logger;
-    private readonly IUser _user;
     private readonly IApplicationDbContext _context;
+    private readonly ILogger<TRequest> _logger;
+    private readonly Stopwatch _timer;
+    private readonly IUser _user;
 
     public PerformanceBehaviour(
         ILogger<TRequest> logger,
@@ -23,7 +21,8 @@ public class PerformanceBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequ
         _context = context;
     }
 
-    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next,
+        CancellationToken cancellationToken)
     {
         _timer.Start();
 
@@ -40,14 +39,13 @@ public class PerformanceBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequ
             var userName = string.Empty;
 
             if (!userId.Equals(default))
-            {
                 userName = await _context.Users
                     .Where(u => u.Id == userId)
                     .Select(u => u.UserName)
                     .FirstOrDefaultAsync(cancellationToken);
-            }
 
-            _logger.LogWarning("CleanArchitecture Long Running Request: {Name} ({ElapsedMilliseconds} milliseconds) {@UserId} {@UserName} {@Request}",
+            _logger.LogWarning(
+                "CleanArchitecture Long Running Request: {Name} ({ElapsedMilliseconds} milliseconds) {@UserId} {@UserName} {@Request}",
                 requestName, elapsedMilliseconds, userId, userName, request);
         }
 

@@ -1,6 +1,3 @@
-using Application.Common.Interfaces;
-using Domain.Entities;
-
 namespace Application.Locations.Commands.CreateLocation;
 
 public record CreateLocationCommand : IRequest<long>

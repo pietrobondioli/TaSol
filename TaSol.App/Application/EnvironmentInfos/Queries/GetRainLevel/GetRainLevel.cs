@@ -1,5 +1,3 @@
-using Application.Common.Interfaces;
-
 namespace Application.Queries.Queries.GetRainLevel;
 
 public record GetRainLevelQuery : IRequest<GetRainLevelDto>

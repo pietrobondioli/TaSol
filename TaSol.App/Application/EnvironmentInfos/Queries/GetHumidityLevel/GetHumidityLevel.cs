@@ -1,5 +1,3 @@
-using Application.Common.Interfaces;
-
 namespace Application.Queries.Queries.GetHumidityLevel;
 
 public record GetHumidityLevelQuery : IRequest<GetHumidityLevelDto>

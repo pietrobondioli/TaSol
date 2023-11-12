@@ -1,6 +1,3 @@
-using Application.Common.Interfaces;
-using Domain.Entities;
-
 namespace Application.EnvironmentInfos.Commands.CreateEnvironmentInfo;
 
 public record CreateEnvironmentInfoCommand : IRequest<long>

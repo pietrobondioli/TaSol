@@ -1,5 +1,3 @@
-using Application.Common.Interfaces;
-
 namespace Application.Queries.Queries.GetLocationById;
 
 public record GetLocationByIdQuery : IRequest<GetLocationByIdDto>
