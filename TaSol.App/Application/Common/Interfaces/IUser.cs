@@ -2,5 +2,5 @@
 
 public interface IUser
 {
-    Int64? Id { get; }
+    long? Id { get; init; }
 }

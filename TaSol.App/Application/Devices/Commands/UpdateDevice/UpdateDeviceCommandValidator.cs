@@ -4,6 +4,15 @@ public class UpdateDeviceCommandValidator : AbstractValidator<UpdateDeviceComman
 {
     public UpdateDeviceCommandValidator()
     {
-        // Validation rules go here
+        RuleFor(v => v.DeviceId)
+            .NotEmpty();
+
+        RuleFor(v => v.Name)
+            .MaximumLength(200)
+            .NotEmpty();
+
+        RuleFor(v => v.Description)
+            .MaximumLength(1000)
+            .NotEmpty();
     }
 }
