@@ -4,6 +4,15 @@ public class CreateDeviceCommandValidator : AbstractValidator<CreateDeviceComman
 {
     public CreateDeviceCommandValidator()
     {
-        // Validation rules go here
+        RuleFor(v => v.Name)
+            .MaximumLength(200)
+            .NotEmpty();
+
+        RuleFor(v => v.Description)
+            .MaximumLength(1000)
+            .NotEmpty();
+
+        RuleFor(v => v.LocationId)
+            .NotEmpty();
     }
 }

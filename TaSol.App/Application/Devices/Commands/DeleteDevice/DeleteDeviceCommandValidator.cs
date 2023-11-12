@@ -4,6 +4,7 @@ public class DeleteDeviceCommandValidator : AbstractValidator<DeleteDeviceComman
 {
     public DeleteDeviceCommandValidator()
     {
-        // Validation rules go here
+        RuleFor(v => v.DeviceId)
+            .NotEmpty();
     }
 }
