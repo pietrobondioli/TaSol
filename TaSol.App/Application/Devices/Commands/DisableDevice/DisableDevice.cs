@@ -1,24 +1,24 @@
 using Domain.Entities;
 
-namespace Application.Commands.Commands.ReactivateDevice;
+namespace Application.Devices.Commands.DisableDevice;
 
-public record ReactivateDeviceCommand : IRequest<long>
+public record DisableDeviceCommand : IRequest<long>
 {
-    public string? DeviceId { get; init; }
+    public string DeviceId { get; init; } = null!;
 }
 
-public class ReactivateDeviceCommandHandler : IRequestHandler<ReactivateDeviceCommand, long>
+public class DisableDeviceCommandHandler : IRequestHandler<DisableDeviceCommand, long>
 {
     private readonly IApplicationDbContext _context;
     private readonly IUser _user;
 
-    public ReactivateDeviceCommandHandler(IUser user, IApplicationDbContext context)
+    public DisableDeviceCommandHandler(IUser user, IApplicationDbContext context)
     {
         _user = user;
         _context = context;
     }
 
-    public async Task<long> Handle(ReactivateDeviceCommand request, CancellationToken cancellationToken)
+    public async Task<long> Handle(DisableDeviceCommand request, CancellationToken cancellationToken)
     {
         var entity = await _context.Devices.FindAsync(request.DeviceId, cancellationToken);
 
@@ -26,9 +26,7 @@ public class ReactivateDeviceCommandHandler : IRequestHandler<ReactivateDeviceCo
 
         if (entity.OwnerId != _user.Id) throw new ForbiddenAccessException();
 
-        entity.IsDeleted = false;
-        entity.DeletedAt = null;
-        entity.DeletedBy = null;
+        entity.IsActive = false;
 
         await _context.SaveChangesAsync(cancellationToken);
 

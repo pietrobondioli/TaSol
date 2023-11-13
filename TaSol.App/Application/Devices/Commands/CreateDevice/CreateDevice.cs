@@ -5,22 +5,26 @@ namespace Application.Devices.Commands.CreateDevice;
 
 public record CreateDeviceCommand : IRequest<long>
 {
-    public string? Name { get; init; }
+    public string Name { get; init; }
 
-    public string? Description { get; init; }
+    public string Description { get; init; }
 
-    public string? LocationId { get; init; }
+    public long LocationId { get; init; }
 }
 
 public class CreateDeviceCommandHandler : IRequestHandler<CreateDeviceCommand, long>
 {
     private readonly IApplicationDbContext _context;
+
     private readonly IUser _user;
 
-    public CreateDeviceCommandHandler(IUser user, IApplicationDbContext context)
+    private readonly ISecurityUtils _securityUtils;
+
+    public CreateDeviceCommandHandler(IUser user, IApplicationDbContext context, ISecurityUtils securityUtils)
     {
-        _user = user;
         _context = context;
+        _user = user;
+        _securityUtils = securityUtils;
     }
 
     public async Task<long> Handle(CreateDeviceCommand request, CancellationToken cancellationToken)
@@ -31,7 +35,7 @@ public class CreateDeviceCommandHandler : IRequestHandler<CreateDeviceCommand, l
             Description = request.Description,
             LocationId = request.LocationId,
             OwnerId = _user.Id!.Value,
-            AuthToken = Guid.NewGuid().ToString()
+            AuthTokenHash = _securityUtils.HashPassword(_securityUtils.GenerateRandomApiKey()),
         };
 
         entity.AddDomainEvent(new DeviceCreatedEvent(entity));
