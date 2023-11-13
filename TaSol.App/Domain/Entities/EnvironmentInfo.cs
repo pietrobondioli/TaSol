@@ -15,4 +15,8 @@ public class EnvironmentInfo : BaseAuditableEntity
     public long DeviceId { get; set; }
 
     [ForeignKey(nameof(DeviceId))] public Device Device { get; set; } = null!;
+
+    public long LocationId { get; set; }
+
+    [ForeignKey(nameof(LocationId))] public Location Location { get; set; } = null!;
 }
