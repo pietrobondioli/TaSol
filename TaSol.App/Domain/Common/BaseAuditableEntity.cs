@@ -4,6 +4,10 @@ namespace Domain.Common;
 
 public abstract class BaseAuditableEntity : BaseEntity
 {
+    public long? OwnerId { get; set; }
+
+    [ForeignKey(nameof(OwnerId))] public User? Owner { get; set; }
+
     public DateTimeOffset CreatedAt { get; set; }
 
     public long? CreatedBy { get; set; }
@@ -16,7 +20,7 @@ public abstract class BaseAuditableEntity : BaseEntity
 
     [ForeignKey(nameof(LastModifiedBy))] public User? LastModifiedByUser { get; set; }
 
-    public bool IsDeleted { get; set; }
+    public bool IsDeleted { get; set; } = false;
 
     public DateTimeOffset? DeletedAt { get; set; }
 

@@ -13,6 +13,6 @@ public class CreateDeviceCommandValidator : AbstractValidator<CreateDeviceComman
             .NotEmpty();
 
         RuleFor(v => v.LocationId)
-            .NotEmpty();
+            .NotNull();
     }
 }

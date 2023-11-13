@@ -8,15 +8,14 @@ public class Device : BaseAuditableEntity
 
     public string Description { get; set; } = null!;
 
-    public string AuthToken { get; set; } = null!;
+    public string AuthTokenHash { get; set; } = null!;
 
-    public string LocationId { get; set; } = null!;
+    public long LocationId { get; set; }
 
+    public bool IsActive { get; set; }
+
+    [ForeignKey(nameof(LocationId))]
     public Location Location { get; set; } = null!;
-
-    public long OwnerId { get; set; }
-
-    [ForeignKey(nameof(OwnerId))] public virtual User Owner { get; set; } = null!;
 
     public ICollection<EnvironmentInfo> EnvironmentInfos { get; set; } = null!;
 }
