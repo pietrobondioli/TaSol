@@ -16,7 +16,7 @@ public abstract class BaseUniqueConsumableToken : BaseAuditableEntity
 
     public bool IsActive => ConsumedAt == null && RevokedAt == null && !IsExpired;
 
-    public void Consume(string consumerIpAddress)
+    public void Consume(string consumerIpAddress = null!)
     {
         if (IsActive)
         {

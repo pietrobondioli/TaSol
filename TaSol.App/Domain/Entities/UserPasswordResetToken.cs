@@ -8,13 +8,10 @@ public class UserPasswordResetToken : BaseUniqueConsumableToken
 
     [ForeignKey(nameof(UserId))] public User User { get; set; } = null!;
 
-    public static UserPasswordResetToken Create(User user, int expirationInMinutes = 30)
+    public UserPasswordResetToken(User user, int expirationInMinutes = 30)
     {
-        return new UserPasswordResetToken
-        {
-            UserId = user.Id,
-            Token = Guid.NewGuid().ToString(),
-            ExpiresAt = DateTimeOffset.UtcNow.AddMinutes(expirationInMinutes)
-        };
+        UserId = user.Id;
+        Token = Guid.NewGuid().ToString();
+        ExpiresAt = DateTimeOffset.UtcNow.AddMinutes(expirationInMinutes);
     }
 }
