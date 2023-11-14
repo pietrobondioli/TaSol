@@ -8,13 +8,10 @@ public class UserEmailVerificationToken : BaseUniqueConsumableToken
 
     [ForeignKey(nameof(UserId))] public User User { get; set; } = null!;
 
-    public static UserEmailVerificationToken Create(User user, int expirationInMinutes = 3600)
+    public UserEmailVerificationToken(User user, int expirationInMinutes = 3600)
     {
-        return new UserEmailVerificationToken
-        {
-            UserId = user.Id,
-            Token = Guid.NewGuid().ToString(),
-            ExpiresAt = DateTimeOffset.UtcNow.AddMinutes(expirationInMinutes)
-        };
+        UserId = user.Id;
+        Token = Guid.NewGuid().ToString();
+        ExpiresAt = DateTimeOffset.UtcNow.AddMinutes(expirationInMinutes);
     }
 }

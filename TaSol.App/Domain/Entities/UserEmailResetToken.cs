@@ -8,13 +8,10 @@ public class UserEmailResetToken : BaseUniqueConsumableToken
 
     [ForeignKey(nameof(UserId))] public User User { get; set; } = null!;
 
-    public static UserEmailResetToken Create(User user, int expirationInMinutes = 30)
+    public UserEmailResetToken(User user, int expirationInMinutes = 30)
     {
-        return new UserEmailResetToken
-        {
-            UserId = user.Id,
-            Token = Guid.NewGuid().ToString(),
-            ExpiresAt = DateTimeOffset.UtcNow.AddMinutes(expirationInMinutes)
-        };
+        UserId = user.Id;
+        Token = Guid.NewGuid().ToString();
+        ExpiresAt = DateTimeOffset.UtcNow.AddMinutes(expirationInMinutes);
     }
 }
