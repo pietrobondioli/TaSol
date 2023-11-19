@@ -2,5 +2,5 @@
 
 public interface IUser
 {
-    long? Id { get; init; }
+    long? Id { get; }
 }

@@ -1,3 +1,5 @@
+using Domain.Entities;
+
 namespace Application.Users.Queries.GetUserById;
 
 public record GetUserByIdQuery : IRequest<UserDto>
@@ -18,6 +20,11 @@ public class GetUserByIdQueryHandler : IRequestHandler<GetUserByIdQuery, UserDto
 
     public async Task<UserDto> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var user = await _context.Users
+            .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
+
+        if (user == null) throw new NotFoundException(nameof(User), request.UserId);
+
+        return _mapper.Map<UserDto>(user);
     }
 }
