@@ -1,4 +1,4 @@
-namespace Domain.Settings;
+namespace Shared.Settings;
 
 public class JwtSettings
 {
