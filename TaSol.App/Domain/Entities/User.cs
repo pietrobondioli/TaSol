@@ -1,38 +1,49 @@
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Entities;
 
 public class User : BaseAuditableEntity
 {
-    public string UserName { get; set; }
+    [Required]
+    public string UserName { get; set; } = null!;
 
-    public string PasswordHash { get; set; }
+    [Required]
+    public string PasswordHash { get; set; } = null!;
 
-    public string FirstName { get; set; }
+    [Required]
+    public string FirstName { get; set; } = null!;
 
-    public string LastName { get; set; }
+    [Required]
+    public string LastName { get; set; } = null!;
 
-    public string Email { get; set; }
+    [Required]
+    public string Email { get; set; } = null!;
 
-    public string PhoneNumber { get; set; }
+    [Required]
+    public string PhoneNumber { get; set; } = null!;
 
-    public string Role { get; set; }
+    [Required]
+    public string Role { get; set; } = Roles.User;
 
     public string? RefreshToken { get; set; }
 
     public DateTimeOffset? RefreshTokenExpiresAt { get; set; }
 
+    [Required]
     public bool IsVerified { get; set; }
 
+    [Required]
     public long MetadataId { get; set; }
 
-    [ForeignKey(nameof(MetadataId))] public UserMetadata Metadata { get; set; } = null!;
+    [ForeignKey(nameof(MetadataId))]
+    public virtual UserMetadata Metadata { get; set; } = null!;
 
-    public ICollection<UserPasswordResetToken> PasswordResetTokens { get; set; }
+    public virtual ICollection<UserPasswordResetToken> PasswordResetTokens { get; set; } = null!;
 
-    public ICollection<UserEmailResetToken> EmailResetTokens { get; set; }
+    public virtual ICollection<UserEmailResetToken> EmailResetTokens { get; set; } = null!;
 
-    public ICollection<UserEmailVerificationToken> EmailVerificationTokens { get; set; }
+    public virtual ICollection<UserEmailVerificationToken> EmailVerificationTokens { get; set; } = null!;
 
     public bool IsInRole(string role)
     {

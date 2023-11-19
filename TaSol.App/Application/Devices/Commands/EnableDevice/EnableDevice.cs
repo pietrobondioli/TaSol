@@ -4,7 +4,7 @@ namespace Application.Commands.Commands.EnableDevice;
 
 public record EnableDeviceCommand : IRequest<long>
 {
-    public string? DeviceId { get; init; }
+    public string DeviceId { get; init; }
 }
 
 public class EnableDeviceCommandHandler : IRequestHandler<EnableDeviceCommand, long>

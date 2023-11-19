@@ -1,12 +1,15 @@
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Entities;
 
 public class UserEmailResetToken : BaseUniqueConsumableToken
 {
+    [Required]
     public long UserId { get; set; }
 
-    [ForeignKey(nameof(UserId))] public User User { get; set; } = null!;
+    [ForeignKey(nameof(UserId))]
+    public virtual User User { get; set; } = null!;
 
     public UserEmailResetToken(User user, int expirationInMinutes = 30)
     {

@@ -1,16 +1,34 @@
+using Application.Common.Models;
 using Domain.Entities;
 
 namespace Application.Queries.Queries.GetDevicesWithPagination;
 
-public class GetDevicesWithPaginationDto
+public class DeviceDto
 {
-    // DTO properties go here
+    public string Name { get; set; }
 
-    private class Mapping : Profile
+    public string Description { get; set; }
+
+    public string AuthTokenHash { get; set; }
+
+    public bool IsActive { get; set; }
+
+    public long LocationId { get; set; }
+
+    public Location Location { get; set; }
+
+    private sealed class Mapping : Profile
     {
         public Mapping()
         {
-            CreateMap<User, GetDevicesWithPaginationDto>(); // Adjust the source entity as needed
+            CreateMap<Device, DeviceDto>();
         }
+    }
+}
+
+public class GetDevicesWithPaginationDto : PaginatedList<DeviceDto>
+{
+    public GetDevicesWithPaginationDto(IReadOnlyCollection<DeviceDto> items, int count, int pageNumber, int pageSize) : base(items, count, pageNumber, pageSize)
+    {
     }
 }

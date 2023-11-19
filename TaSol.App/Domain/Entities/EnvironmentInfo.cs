@@ -1,22 +1,31 @@
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Entities;
 
 public class EnvironmentInfo : BaseAuditableEntity
 {
+    [Required]
     public double Temperature { get; set; }
 
+    [Required]
     public int Humidity { get; set; }
 
+    [Required]
     public int LightLevel { get; set; }
 
+    [Required]
     public int RainLevel { get; set; }
 
+    [Required]
     public long DeviceId { get; set; }
 
-    [ForeignKey(nameof(DeviceId))] public Device Device { get; set; } = null!;
+    [ForeignKey(nameof(DeviceId))]
+    public virtual Device Device { get; set; } = null!;
 
+    [Required]
     public long LocationId { get; set; }
 
-    [ForeignKey(nameof(LocationId))] public Location Location { get; set; } = null!;
+    [ForeignKey(nameof(LocationId))]
+    public virtual Location Location { get; set; } = null!;
 }
