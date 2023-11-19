@@ -1,8 +1,10 @@
+using Domain.Entities;
+
 namespace Application.Queries.Queries.GetLocationById;
 
 public record GetLocationByIdQuery : IRequest<GetLocationByIdDto>
 {
-    // Properties go here
+    public int LocationId { get; set; }
 }
 
 public class GetLocationByIdQueryHandler : IRequestHandler<GetLocationByIdQuery, GetLocationByIdDto>
@@ -18,6 +20,11 @@ public class GetLocationByIdQueryHandler : IRequestHandler<GetLocationByIdQuery,
 
     public async Task<GetLocationByIdDto> Handle(GetLocationByIdQuery request, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var location = await _context.Locations
+            .FirstOrDefaultAsync(x => x.Id == request.LocationId, cancellationToken);
+
+        if (location == null) throw new NotFoundException(nameof(Location), request.LocationId);
+
+        return _mapper.Map<GetLocationByIdDto>(location);
     }
 }
