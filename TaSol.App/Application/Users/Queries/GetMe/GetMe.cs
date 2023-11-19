@@ -1,23 +1,29 @@
+using Domain.Entities;
+
 namespace Application.Queries.Queries.GetMe;
 
-public record GetMeQuery : IRequest<GetMeDto>
-{
-    // Properties go here
-}
+public record GetMeQuery : IRequest<GetMeDto> { }
 
 public class GetMeQueryHandler : IRequestHandler<GetMeQuery, GetMeDto>
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
+    private readonly IUser _user;
 
-    public GetMeQueryHandler(IApplicationDbContext context, IMapper mapper)
+    public GetMeQueryHandler(IApplicationDbContext context, IMapper mapper, IUser user)
     {
         _context = context;
         _mapper = mapper;
+        _user = user;
     }
 
     public async Task<GetMeDto> Handle(GetMeQuery request, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var user = await _context.Users
+            .FirstOrDefaultAsync(x => x.Id == _user.Id, cancellationToken);
+
+        if (user == null) throw new NotFoundException(nameof(User), _user.Id);
+
+        return _mapper.Map<GetMeDto>(user);
     }
 }

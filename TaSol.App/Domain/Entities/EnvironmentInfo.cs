@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Entities;
 
-public class EnvironmentInfo : BaseAuditableEntity
+public class EnvironmentInfo : BaseEntity
 {
     [Required]
     public double Temperature { get; set; }

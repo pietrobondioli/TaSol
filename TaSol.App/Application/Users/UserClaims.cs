@@ -10,6 +10,7 @@ public static class UserClaims
         var claims = new List<Claim>
         {
             new(Types.Id, user.Id.ToString()),
+            new(Types.Email, user.Email),
             new(Types.UserName, user.UserName),
             new(Types.Role, user.Role)
         };
@@ -20,6 +21,8 @@ public static class UserClaims
     private static class Types
     {
         public const string Id = ClaimTypes.NameIdentifier;
+
+        public const string Email = ClaimTypes.Email;
 
         public const string UserName = ClaimTypes.Name;
 
