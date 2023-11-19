@@ -18,6 +18,9 @@ public class EnvironmentInfo : BaseEntity
     public int RainLevel { get; set; }
 
     [Required]
+    public DateTimeOffset TimeStamp { get; set; }
+
+    [Required]
     public long DeviceId { get; set; }
 
     [ForeignKey(nameof(DeviceId))]
