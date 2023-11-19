@@ -1,5 +1,4 @@
 using Application.Common.Interfaces;
-using Domain.Settings;
 using Infrastructure.Data;
 using Infrastructure.Data.Interceptors;
 using Infrastructure.Logging;
@@ -9,11 +8,11 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using Serilog.Debugging;
 using Serilog.Enrichers.Sensitive;
 using Serilog.Exceptions;
+using Shared.Settings;
 
 namespace Infrastructure;
 
@@ -22,9 +21,6 @@ public static class DependencyInjection
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services,
         IConfiguration configuration, IWebHostEnvironment env, ConnectionStrings connectionStrings)
     {
-        if (connectionStrings.Database.IsNullOrEmpty())
-            throw new ArgumentException("Database connection string is not set");
-
         services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
         services.AddScoped<ISaveChangesInterceptor, DispatchDomainEventsInterceptor>();
 

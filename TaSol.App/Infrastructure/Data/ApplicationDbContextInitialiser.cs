@@ -26,7 +26,7 @@ public class ApplicationDbContextInitialiser
     private readonly ILogger<ApplicationDbContextInitialiser> _logger;
 
     public ApplicationDbContextInitialiser(ILogger<ApplicationDbContextInitialiser> logger,
-        ApplicationDbContext context, RoleManager<IdentityRole> roleManager)
+        ApplicationDbContext context)
     {
         _logger = logger;
         _context = context;
