@@ -11,11 +11,13 @@ public class RegenerateAuthTokenCommandHandler : IRequestHandler<RegenerateAuthT
 {
     private readonly IApplicationDbContext _context;
     private readonly IUser _user;
+    private readonly ISecurityUtils _securityUtils;
 
-    public RegenerateAuthTokenCommandHandler(IUser user, IApplicationDbContext context)
+    public RegenerateAuthTokenCommandHandler(IUser user, IApplicationDbContext context, ISecurityUtils securityUtils)
     {
         _user = user;
         _context = context;
+        _securityUtils = securityUtils;
     }
 
     public async Task<long> Handle(RegenerateAuthTokenCommand request, CancellationToken cancellationToken)
@@ -26,7 +28,7 @@ public class RegenerateAuthTokenCommandHandler : IRequestHandler<RegenerateAuthT
 
         if (entity.OwnerId != _user.Id) throw new ForbiddenAccessException();
 
-        entity.AuthToken = Guid.NewGuid().ToString();
+        entity.AuthTokenHash = _securityUtils.HashPassword(_securityUtils.GenerateRandomApiKey());
 
         await _context.SaveChangesAsync(cancellationToken);
 

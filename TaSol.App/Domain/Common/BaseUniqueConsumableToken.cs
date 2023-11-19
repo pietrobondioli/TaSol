@@ -1,10 +1,14 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Domain.Common;
 
 public abstract class BaseUniqueConsumableToken : BaseAuditableEntity
 {
-    public string? Token { get; set; }
+    [Required]
+    public string Token { get; set; }
 
-    public DateTimeOffset? ExpiresAt { get; set; }
+    [Required]
+    public DateTimeOffset ExpiresAt { get; set; }
 
     public DateTimeOffset? ConsumedAt { get; set; }
 

@@ -4,13 +4,23 @@ namespace Application.Queries.Queries.GetDeviceById;
 
 public class GetDeviceByIdDto
 {
-    // DTO properties go here
+    public string Name { get; set; }
 
-    private class Mapping : Profile
+    public string Description { get; set; }
+
+    public string AuthTokenHash { get; set; }
+
+    public bool IsActive { get; set; }
+
+    public long LocationId { get; set; }
+
+    public Location Location { get; set; }
+
+    private sealed class Mapping : Profile
     {
         public Mapping()
         {
-            CreateMap<User, GetDeviceByIdDto>(); // Adjust the source entity as needed
+            CreateMap<Device, GetDeviceByIdDto>();
         }
     }
 }

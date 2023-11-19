@@ -2,11 +2,14 @@ namespace Application.Queries.Queries.GetDevicesWithPagination;
 
 public record GetDevicesWithPaginationQuery : IRequest<GetDevicesWithPaginationDto>
 {
-    // Properties go here
+    public int PageNumber { get; init; }
+
+    public int PageSize { get; init; }
+
+    public string DeviceName { get; init; }
 }
 
-public class
-    GetDevicesWithPaginationQueryHandler : IRequestHandler<GetDevicesWithPaginationQuery, GetDevicesWithPaginationDto>
+public class GetDevicesWithPaginationQueryHandler : IRequestHandler<GetDevicesWithPaginationQuery, GetDevicesWithPaginationDto>
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
@@ -20,6 +23,19 @@ public class
     public async Task<GetDevicesWithPaginationDto> Handle(GetDevicesWithPaginationQuery request,
         CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var query = _context.Devices.AsQueryable();
+
+        if (!string.IsNullOrEmpty(request.DeviceName))
+        {
+            query = query.Where(x => x.Name.Contains(request.DeviceName)).OrderBy(x => x.Name);
+        }
+
+        var devices = await query
+            .Skip((request.PageNumber - 1) * request.PageSize)
+            .Take(request.PageSize)
+            .ToListAsync(cancellationToken);
+
+        return new GetDevicesWithPaginationDto(_mapper.Map<List<DeviceDto>>(devices), devices.Count,
+            request.PageNumber, request.PageSize);
     }
 }

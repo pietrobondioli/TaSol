@@ -1,8 +1,10 @@
+using Domain.Entities;
+
 namespace Application.Queries.Queries.GetDeviceById;
 
 public record GetDeviceByIdQuery : IRequest<GetDeviceByIdDto>
 {
-    // Properties go here
+    public long DeviceId { get; init; }
 }
 
 public class GetDeviceByIdQueryHandler : IRequestHandler<GetDeviceByIdQuery, GetDeviceByIdDto>
@@ -18,6 +20,13 @@ public class GetDeviceByIdQueryHandler : IRequestHandler<GetDeviceByIdQuery, Get
 
     public async Task<GetDeviceByIdDto> Handle(GetDeviceByIdQuery request, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var device = await _context.Devices
+            .AsNoTracking()
+            .Include(d => d.Location)
+            .FirstOrDefaultAsync(d => d.Id == request.DeviceId, cancellationToken);
+
+        if (device == null) throw new NotFoundException(nameof(Device), request.DeviceId);
+
+        return _mapper.Map<GetDeviceByIdDto>(device);
     }
 }

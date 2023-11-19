@@ -6,9 +6,9 @@ public record UpdateDeviceCommand : IRequest<long>
 {
     public string DeviceId { get; init; } = null!;
 
-    public string? Name { get; init; }
+    public string Name { get; init; }
 
-    public string? Description { get; init; }
+    public string Description { get; init; }
 }
 
 public class UpdateDeviceCommandHandler : IRequestHandler<UpdateDeviceCommand, long>
@@ -30,8 +30,8 @@ public class UpdateDeviceCommandHandler : IRequestHandler<UpdateDeviceCommand, l
 
         if (entity.OwnerId != _user.Id) throw new ForbiddenAccessException();
 
-        entity.Name = request.Name ?? entity.Name;
-        entity.Description = request.Description ?? entity.Description;
+        entity.Name = request.Name;
+        entity.Description = request.Description;
 
         await _context.SaveChangesAsync(cancellationToken);
 
