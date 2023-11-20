@@ -18,17 +18,10 @@ builder.Host.UseSerilog((context, services, configuration) => configuration
 var configuration = builder.Configuration;
 var env = builder.Environment;
 
-// Configure settings DI
-var apiSettings = configuration.GetSection("ApiSettings");
-builder.Services.Configure<ApiSettings>(apiSettings);
-var connectionStrings = configuration.GetSection("ConnectionStrings");
-builder.Services.Configure<ConnectionStrings>(connectionStrings);
-var jwtSettings = configuration.GetSection("JwtSettings");
-builder.Services.Configure<JwtSettings>(jwtSettings);
-
-builder.Services.AddInfrastructureServices(configuration, env, connectionStrings.Get<ConnectionStrings>());
+builder.Services.AddConfiguration(configuration);
+builder.Services.AddInfrastructureServices(configuration, env);
 builder.Services.AddApplicationServices();
-builder.Services.AddWebServices();
+builder.Services.AddWebServices(configuration);
 
 // Build the application
 var app = builder.Build();

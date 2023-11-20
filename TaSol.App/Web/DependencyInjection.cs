@@ -1,17 +1,36 @@
+using System.Text;
 using Application.Common.Interfaces;
 using Infrastructure.Data;
 using Infrastructure.Utils;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Web.Common.Middleware;
-using Web.Services;
+using Shared.Constants;
+using Shared.Settings;
+using Web.Common.Services;
 
 namespace Web;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddWebServices(this IServiceCollection services)
+    public static IServiceCollection AddConfiguration(this IServiceCollection services, IConfiguration configuration)
+    {
+        var apiSettings = configuration.GetSection(SettingsSections.ApiSettings);
+        services.Configure<ApiSettings>(apiSettings);
+
+        var connectionStrings = configuration.GetSection(SettingsSections.ConnectionStrings);
+        services.Configure<ConnectionStrings>(connectionStrings);
+
+        var jwtSettings = configuration.GetSection(SettingsSections.JwtSettings);
+        services.Configure<JwtSettings>(jwtSettings);
+
+        return services;
+    }
+
+    public static IServiceCollection AddWebServices(this IServiceCollection services, IConfiguration configuration)
     {
         ConfigureDIs(services);
+        
+        ConfigureJwtAuthentication(services, configuration);
 
         services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -83,5 +102,34 @@ public static class DependencyInjection
         services.AddScoped<IUser, CurrentUser>();
 
         services.AddSingleton<ISecurityUtils, SecurityUtils>();
+    }
+
+    private static void ConfigureJwtAuthentication(IServiceCollection services, IConfiguration configuration)
+    {
+        var jwtSettings = configuration.GetSection(SettingsSections.JwtSettings).Get<JwtSettings>();
+
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret));
+        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+        services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = "JwtBearer";
+                options.DefaultChallengeScheme = "JwtBearer";
+            })
+            .AddJwtBearer("JwtBearer", options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidIssuer = jwtSettings.Issuer,
+                    ValidateAudience = true,
+                    ValidAudience = jwtSettings.Audience,
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = creds.Key,
+                    RequireExpirationTime = true,
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
     }
 }
