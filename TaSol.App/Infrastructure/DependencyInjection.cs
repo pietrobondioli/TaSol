@@ -12,6 +12,7 @@ using Serilog;
 using Serilog.Debugging;
 using Serilog.Enrichers.Sensitive;
 using Serilog.Exceptions;
+using Shared.Constants;
 using Shared.Settings;
 
 namespace Infrastructure;
@@ -19,8 +20,10 @@ namespace Infrastructure;
 public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services,
-        IConfiguration configuration, IWebHostEnvironment env, ConnectionStrings connectionStrings)
+        IConfiguration configuration, IWebHostEnvironment env)
     {
+        var connectionStrings = configuration.GetSection(SettingsSections.ConnectionStrings).Get<ConnectionStrings>();
+        
         services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
         services.AddScoped<ISaveChangesInterceptor, DispatchDomainEventsInterceptor>();
 
