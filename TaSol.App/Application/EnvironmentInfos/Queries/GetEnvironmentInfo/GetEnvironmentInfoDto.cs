@@ -1,10 +1,8 @@
-using Domain.Entities;
-
 namespace Application.EnvironmentInfos.Queries.GetEnvironmentInfo;
 
 public class GetEnvironmentInfoDto
 {
-    public List<HumidityDataPoint> DataPoints { get; set; } = new List<HumidityDataPoint>();
+    public List<HumidityDataPoint> DataPoints { get; set; } = new();
 }
 
 public class HumidityDataPoint

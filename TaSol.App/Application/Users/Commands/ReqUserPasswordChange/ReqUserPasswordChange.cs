@@ -21,7 +21,10 @@ public class ReqUserPasswordChangeCommandHandler : IRequestHandler<ReqUserPasswo
     {
         var userWithEmail = await _context.Users.FirstOrDefaultAsync(x => x.Email == request.Email, cancellationToken);
 
-        if (userWithEmail == null) throw new NotFoundException(nameof(User), request.Email);
+        if (userWithEmail == null)
+        {
+            throw new NotFoundException(nameof(User), request.Email);
+        }
 
         await InvalidateExistingTokens(request.Email, cancellationToken);
 
@@ -38,7 +41,8 @@ public class ReqUserPasswordChangeCommandHandler : IRequestHandler<ReqUserPasswo
 
     private async Task InvalidateExistingTokens(string email, CancellationToken cancellationToken)
     {
-        var tokens = await _context.UserPasswordResetTokens.Where(x => x.User.Email == email).ToListAsync(cancellationToken);
+        var tokens = await _context.UserPasswordResetTokens.Where(x => x.User.Email == email)
+            .ToListAsync(cancellationToken);
 
         foreach (var token in tokens)
         {

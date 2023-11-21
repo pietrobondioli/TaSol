@@ -16,6 +16,5 @@ public class UserMetadata : BaseEntity
 
     public long UserId { get; set; }
 
-    [ForeignKey(nameof(UserId))]
-    public virtual User User { get; set; } = null!;
+    [ForeignKey(nameof(UserId))] public virtual User User { get; set; } = null!;
 }

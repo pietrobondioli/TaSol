@@ -23,7 +23,10 @@ public class GetLocationByIdQueryHandler : IRequestHandler<GetLocationByIdQuery,
         var location = await _context.Locations
             .FirstOrDefaultAsync(x => x.Id == request.LocationId, cancellationToken);
 
-        if (location == null) throw new NotFoundException(nameof(Location), request.LocationId);
+        if (location == null)
+        {
+            throw new NotFoundException(nameof(Location), request.LocationId);
+        }
 
         return _mapper.Map<GetLocationByIdDto>(location);
     }

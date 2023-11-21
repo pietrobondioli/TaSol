@@ -21,9 +21,15 @@ public class ReqNewUserVerificationTokenCommandHandler : IRequestHandler<ReqNewU
     {
         var userWithEmail = await _context.Users.FirstOrDefaultAsync(x => x.Email == request.Email, cancellationToken);
 
-        if (userWithEmail == null) throw new NotFoundException(nameof(User), request.Email);
+        if (userWithEmail == null)
+        {
+            throw new NotFoundException(nameof(User), request.Email);
+        }
 
-        if (userWithEmail.IsVerified) throw new ConflictException("Email already verified");
+        if (userWithEmail.IsVerified)
+        {
+            throw new ConflictException("Email already verified");
+        }
 
         await InvalidateExistingTokens(request.Email, cancellationToken);
 
@@ -40,7 +46,8 @@ public class ReqNewUserVerificationTokenCommandHandler : IRequestHandler<ReqNewU
 
     private async Task InvalidateExistingTokens(string email, CancellationToken cancellationToken)
     {
-        var tokens = await _context.UserEmailVerificationTokens.Where(x => x.User.Email == email).ToListAsync(cancellationToken);
+        var tokens = await _context.UserEmailVerificationTokens.Where(x => x.User.Email == email)
+            .ToListAsync(cancellationToken);
 
         foreach (var token in tokens)
         {

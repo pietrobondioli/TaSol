@@ -26,15 +26,14 @@ public class DeviceController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetPaginatedAsync([FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] string deviceName)
+    public async Task<IActionResult> GetPaginatedAsync([FromQuery] int pageNumber, [FromQuery] int pageSize,
+        [FromQuery] string deviceName)
     {
         var query = new GetDevicesWithPaginationQuery
         {
-            PageNumber = pageNumber,
-            PageSize = pageSize,
-            DeviceName = deviceName
+            PageNumber = pageNumber, PageSize = pageSize, DeviceName = deviceName
         };
-        
+
         var result = await _sender.Send(query);
 
         return Ok(result);
@@ -43,10 +42,7 @@ public class DeviceController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetAsync([FromRoute] string id)
     {
-        var query = new GetDeviceByIdQuery
-        {
-            DeviceId = long.Parse(id)
-        };
+        var query = new GetDeviceByIdQuery { DeviceId = long.Parse(id) };
 
         var result = await _sender.Send(query);
 
@@ -56,11 +52,7 @@ public class DeviceController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateAsync([FromBody] CreateDeviceDto body)
     {
-        var command = new CreateDeviceCommand
-        {
-            Name = body.Name,
-            LocationId = body.LocationId
-        };
+        var command = new CreateDeviceCommand { Name = body.Name, LocationId = body.LocationId };
 
         var result = await _sender.Send(command);
 
@@ -70,11 +62,7 @@ public class DeviceController : ControllerBase
     [HttpPost("{id}/change-location")]
     public async Task<IActionResult> ChangeLocationAsync([FromRoute] string id, [FromBody] ChangeDeviceLocationDto body)
     {
-        var command = new ChangeDeviceLocationCommand
-        {
-            DeviceId = long.Parse(id),
-            NewLocationId = body.NewLocationId
-        };
+        var command = new ChangeDeviceLocationCommand { DeviceId = long.Parse(id), NewLocationId = body.NewLocationId };
 
         var result = await _sender.Send(command);
 
@@ -84,10 +72,7 @@ public class DeviceController : ControllerBase
     [HttpPost("{id}/enable")]
     public async Task<IActionResult> EnableAsync([FromRoute] string id)
     {
-        var command = new EnableDeviceCommand
-        {
-            DeviceId = long.Parse(id)
-        };
+        var command = new EnableDeviceCommand { DeviceId = long.Parse(id) };
 
         var result = await _sender.Send(command);
 
@@ -97,10 +82,7 @@ public class DeviceController : ControllerBase
     [HttpPost("{id}/disable")]
     public async Task<IActionResult> DisableAsync([FromRoute] string id)
     {
-        var command = new DisableDeviceCommand
-        {
-            DeviceId = long.Parse(id)
-        };
+        var command = new DisableDeviceCommand { DeviceId = long.Parse(id) };
 
         var result = await _sender.Send(command);
 
@@ -110,12 +92,7 @@ public class DeviceController : ControllerBase
     [HttpPost("{id}/update")]
     public async Task<IActionResult> UpdateAsync([FromRoute] string id, [FromBody] UpdateDeviceDto body)
     {
-        var command = new UpdateDeviceCommand
-        {
-            DeviceId = id,
-            Name = body.Name,
-            Description = body.Description
-        };
+        var command = new UpdateDeviceCommand { DeviceId = id, Name = body.Name, Description = body.Description };
 
         var result = await _sender.Send(command);
 
@@ -125,10 +102,7 @@ public class DeviceController : ControllerBase
     [HttpPost("{id}/regenerate-token")]
     public async Task<IActionResult> RegenerateTokenAsync([FromRoute] string id)
     {
-        var command = new RegenerateAuthTokenCommand
-        {
-            DeviceId = long.Parse(id)
-        };
+        var command = new RegenerateAuthTokenCommand { DeviceId = long.Parse(id) };
 
         var result = await _sender.Send(command);
 

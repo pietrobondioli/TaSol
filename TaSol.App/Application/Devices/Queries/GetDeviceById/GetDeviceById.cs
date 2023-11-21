@@ -25,7 +25,10 @@ public class GetDeviceByIdQueryHandler : IRequestHandler<GetDeviceByIdQuery, Get
             .Include(d => d.Location)
             .FirstOrDefaultAsync(d => d.Id == request.DeviceId, cancellationToken);
 
-        if (device == null) throw new NotFoundException(nameof(Device), request.DeviceId);
+        if (device == null)
+        {
+            throw new NotFoundException(nameof(Device), request.DeviceId);
+        }
 
         return _mapper.Map<GetDeviceByIdDto>(device);
     }

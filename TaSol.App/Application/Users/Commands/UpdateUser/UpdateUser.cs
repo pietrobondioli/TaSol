@@ -29,13 +29,30 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, long>
     {
         var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
-        if (user == null) throw new NotFoundException(nameof(User), request.Id);
+        if (user == null)
+        {
+            throw new NotFoundException(nameof(User), request.Id);
+        }
 
-        if (user.Id != _user.Id) throw new ForbiddenAccessException();
+        if (user.Id != _user.Id)
+        {
+            throw new ForbiddenAccessException();
+        }
 
-        if (request.FirstName != null) user.FirstName = request.FirstName;
-        if (request.LastName != null) user.LastName = request.LastName;
-        if (request.PhoneNumber != null) user.PhoneNumber = request.PhoneNumber;
+        if (request.FirstName != null)
+        {
+            user.FirstName = request.FirstName;
+        }
+
+        if (request.LastName != null)
+        {
+            user.LastName = request.LastName;
+        }
+
+        if (request.PhoneNumber != null)
+        {
+            user.PhoneNumber = request.PhoneNumber;
+        }
 
         await _context.SaveChangesAsync(cancellationToken);
 

@@ -10,8 +10,8 @@ public record RegenerateAuthTokenCommand : IRequest<long>
 public class RegenerateAuthTokenCommandHandler : IRequestHandler<RegenerateAuthTokenCommand, long>
 {
     private readonly IApplicationDbContext _context;
-    private readonly IUser _user;
     private readonly ISecurityUtils _securityUtils;
+    private readonly IUser _user;
 
     public RegenerateAuthTokenCommandHandler(IUser user, IApplicationDbContext context, ISecurityUtils securityUtils)
     {
@@ -24,9 +24,15 @@ public class RegenerateAuthTokenCommandHandler : IRequestHandler<RegenerateAuthT
     {
         var entity = await _context.Devices.FindAsync(request.DeviceId, cancellationToken);
 
-        if (entity == null) throw new NotFoundException(nameof(Device), request.DeviceId);
+        if (entity == null)
+        {
+            throw new NotFoundException(nameof(Device), request.DeviceId);
+        }
 
-        if (entity.OwnerId != _user.Id) throw new ForbiddenAccessException();
+        if (entity.OwnerId != _user.Id)
+        {
+            throw new ForbiddenAccessException();
+        }
 
         entity.AuthTokenHash = _securityUtils.HashPassword(_securityUtils.GenerateRandomApiKey());
 

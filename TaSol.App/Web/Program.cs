@@ -1,7 +1,6 @@
 using Application;
 using Infrastructure;
 using Serilog;
-using Shared.Settings;
 using Web;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -61,4 +60,6 @@ app.Map("/", () => Results.Redirect("/api"));
 
 app.Run();
 
-public partial class Program { }
+public partial class Program
+{
+}

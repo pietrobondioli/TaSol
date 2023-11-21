@@ -21,23 +21,22 @@ public class EnvironmentInfoController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAsync([FromQuery] long locationId, [FromQuery] long? deviceId, [FromQuery] QueryRange.Options range, [FromQuery] QueryInterval.Options interval)
+    public async Task<IActionResult> GetAsync([FromQuery] long locationId, [FromQuery] long? deviceId,
+        [FromQuery] QueryRange.Options range, [FromQuery] QueryInterval.Options interval)
     {
         var query = new GetEnvironmentInfoQuery
         {
-            LocationId = locationId,
-            DeviceId = deviceId,
-            Range = range,
-            Interval = interval
+            LocationId = locationId, DeviceId = deviceId, Range = range, Interval = interval
         };
 
         var result = await _sender.Send(query);
 
         return Ok(result);
     }
-    
+
     [HttpPost]
-    public async Task<IActionResult> CreateAsync([FromHeader] string authHeader, [FromBody] CreateEnvironmentInfoDto body)
+    public async Task<IActionResult> CreateAsync([FromHeader] string authHeader,
+        [FromBody] CreateEnvironmentInfoDto body)
     {
         var command = new CreateEnvironmentInfoCommand
         {

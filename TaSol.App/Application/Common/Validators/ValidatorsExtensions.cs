@@ -17,7 +17,8 @@ public static class ValidatorsExtensions
         return options;
     }
 
-    public static IRuleBuilderOptions<T, string> PasswordConfirmation<T>(this IRuleBuilder<T, string> ruleBuilder, Expression<Func<T, string>> password)
+    public static IRuleBuilderOptions<T, string> PasswordConfirmation<T>(this IRuleBuilder<T, string> ruleBuilder,
+        Expression<Func<T, string>> password)
     {
         var options = ruleBuilder
             .NotEmpty()

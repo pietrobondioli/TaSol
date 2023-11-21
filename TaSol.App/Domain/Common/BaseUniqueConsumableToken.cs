@@ -4,11 +4,9 @@ namespace Domain.Common;
 
 public abstract class BaseUniqueConsumableToken : BaseAuditableEntity
 {
-    [Required]
-    public string Token { get; set; }
+    [Required] public string Token { get; set; }
 
-    [Required]
-    public DateTimeOffset ExpiresAt { get; set; }
+    [Required] public DateTimeOffset ExpiresAt { get; set; }
 
     public DateTimeOffset? ConsumedAt { get; set; }
 
@@ -31,6 +29,9 @@ public abstract class BaseUniqueConsumableToken : BaseAuditableEntity
 
     public void Revoke()
     {
-        if (IsActive) RevokedAt = DateTimeOffset.UtcNow;
+        if (IsActive)
+        {
+            RevokedAt = DateTimeOffset.UtcNow;
+        }
     }
 }

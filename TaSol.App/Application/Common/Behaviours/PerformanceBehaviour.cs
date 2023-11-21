@@ -39,10 +39,12 @@ public class PerformanceBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequ
             var userName = string.Empty;
 
             if (!userId.Equals(default))
+            {
                 userName = await _context.Users
                     .Where(u => u.Id == userId)
                     .Select(u => u.UserName)
                     .FirstOrDefaultAsync(cancellationToken);
+            }
 
             _logger.LogWarning(
                 "CleanArchitecture Long Running Request: {Name} ({ElapsedMilliseconds} milliseconds) {@UserId} {@UserName} {@Request}",

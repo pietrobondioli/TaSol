@@ -32,7 +32,8 @@ public class LocationDto
 
 public class GetLocationsWithPaginationDto : PaginatedList<LocationDto>
 {
-    public GetLocationsWithPaginationDto(IReadOnlyCollection<LocationDto> items, int count, int pageNumber, int pageSize) : base(items, count, pageNumber, pageSize)
+    public GetLocationsWithPaginationDto(IReadOnlyCollection<LocationDto> items, int count, int pageNumber,
+        int pageSize) : base(items, count, pageNumber, pageSize)
     {
     }
 }

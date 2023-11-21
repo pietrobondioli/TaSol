@@ -23,7 +23,7 @@ public static class DependencyInjection
         IConfiguration configuration, IWebHostEnvironment env)
     {
         var connectionStrings = configuration.GetSection(SettingsSections.ConnectionStrings).Get<ConnectionStrings>();
-        
+
         services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
         services.AddScoped<ISaveChangesInterceptor, DispatchDomainEventsInterceptor>();
 
@@ -46,7 +46,10 @@ public static class DependencyInjection
     private static void ConfigureSerilog(IServiceCollection services, IConfiguration configuration,
         IWebHostEnvironment env)
     {
-        if (env.IsDevelopment()) SelfLog.Enable(Console.Error);
+        if (env.IsDevelopment())
+        {
+            SelfLog.Enable(Console.Error);
+        }
 
         services.AddSingleton(new LoggerConfiguration()
             .ReadFrom.Configuration(configuration)
@@ -57,10 +60,7 @@ public static class DependencyInjection
                 {
                     new IbanMaskingOperator(),
                     new CreditCardMaskingOperator(),
-                    new PropertyMaskingOperator(new List<string>
-                    {
-                        "Password", "Token"
-                    })
+                    new PropertyMaskingOperator(new List<string> { "Password", "Token" })
                 };
             })
             .CreateLogger());

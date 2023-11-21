@@ -1,8 +1,4 @@
-
-using Application.Locations.Commands.CreateLocation;
-
 namespace Application.Devices.Commands.ChangeDeviceLocation;
-
 
 public class ChangeDeviceLocationCommandValidator : AbstractValidator<ChangeDeviceLocationCommand>
 {

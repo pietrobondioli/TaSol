@@ -16,9 +16,9 @@ public class CreateDeviceCommandHandler : IRequestHandler<CreateDeviceCommand, l
 {
     private readonly IApplicationDbContext _context;
 
-    private readonly IUser _user;
-
     private readonly ISecurityUtils _securityUtils;
+
+    private readonly IUser _user;
 
     public CreateDeviceCommandHandler(IUser user, IApplicationDbContext context, ISecurityUtils securityUtils)
     {
@@ -35,7 +35,7 @@ public class CreateDeviceCommandHandler : IRequestHandler<CreateDeviceCommand, l
             Description = request.Description,
             LocationId = request.LocationId,
             OwnerId = _user.Id!.Value,
-            AuthTokenHash = _securityUtils.HashPassword(_securityUtils.GenerateRandomApiKey()),
+            AuthTokenHash = _securityUtils.HashPassword(_securityUtils.GenerateRandomApiKey())
         };
 
         entity.AddDomainEvent(new DeviceCreatedEvent(entity));

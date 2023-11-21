@@ -28,7 +28,8 @@ public class DeviceDto
 
 public class GetDevicesWithPaginationDto : PaginatedList<DeviceDto>
 {
-    public GetDevicesWithPaginationDto(IReadOnlyCollection<DeviceDto> items, int count, int pageNumber, int pageSize) : base(items, count, pageNumber, pageSize)
+    public GetDevicesWithPaginationDto(IReadOnlyCollection<DeviceDto> items, int count, int pageNumber, int pageSize) :
+        base(items, count, pageNumber, pageSize)
     {
     }
 }

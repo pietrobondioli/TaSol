@@ -23,10 +23,7 @@ public class PropertyMaskingOperator : RegexMaskingOperator
     {
         try
         {
-            var options = new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            };
+            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
             var dict = JsonSerializer.Deserialize<Dictionary<string, object>>(input, options);
             if (dict != null)

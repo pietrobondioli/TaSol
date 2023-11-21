@@ -25,7 +25,10 @@ public class AuthorizationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRe
         if (authorizeAttributes.Any())
         {
             // Must be authenticated user
-            if (_user.Id == null) throw new UnauthorizedAccessException();
+            if (_user.Id == null)
+            {
+                throw new UnauthorizedAccessException();
+            }
 
             // Role-based authorization
             var authorizeAttributesWithRoles = authorizeAttributes.Where(a => !string.IsNullOrWhiteSpace(a.Roles));
@@ -35,18 +38,21 @@ public class AuthorizationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRe
                 var authorized = false;
 
                 foreach (var roles in authorizeAttributesWithRoles.Select(a => a.Roles.Split(',')))
-                    foreach (var role in roles)
+                foreach (var role in roles)
+                {
+                    var user = await _context.Users.FindAsync(_user.Id);
+                    if (user.IsInRole(role))
                     {
-                        var user = await _context.Users.FindAsync(_user.Id);
-                        if (user.IsInRole(role))
-                        {
-                            authorized = true;
-                            break;
-                        }
+                        authorized = true;
+                        break;
                     }
+                }
 
                 // Must be a member of at least one role in roles
-                if (!authorized) throw new ForbiddenAccessException();
+                if (!authorized)
+                {
+                    throw new ForbiddenAccessException();
+                }
             }
         }
 

@@ -1,5 +1,3 @@
-using Domain.Entities;
-
 namespace Web.Common.Interfaces;
 
 public interface IJwtService

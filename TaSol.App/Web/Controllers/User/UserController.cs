@@ -20,10 +20,10 @@ namespace Web.Controllers.User;
 [Route("[controller]")]
 public class UserController : ControllerBase
 {
+    private readonly HttpContext _httpContext;
+    private readonly IJwtService _jwtService;
     private readonly ILogger<UserController> _logger;
     private readonly ISender _sender;
-    private readonly IJwtService _jwtService;
-    private readonly HttpContext _httpContext;
 
     public UserController(ILogger<UserController> logger, ISender sender, IJwtService jwtService,
         HttpContext httpContext)
@@ -57,25 +57,22 @@ public class UserController : ControllerBase
     {
         var command = new AuthenticateUserCommand
         {
-            UserName = dto.UserName,
-            Email = dto.Email,
-            Password = dto.Password
+            UserName = dto.UserName, Email = dto.Email, Password = dto.Password
         };
 
         var user = await _sender.Send(command);
 
         var jwtToken = _jwtService.GenerateToken(user.Id, user.UserName, user.Email, user.Role);
 
-        _httpContext.Response.Cookies.Append("jwt", jwtToken, new CookieOptions
-        {
-            HttpOnly = true,
-            SameSite = SameSiteMode.Strict,
-            Expires = DateTime.UtcNow.AddDays(7)
-        });
+        _httpContext.Response.Cookies.Append("jwt", jwtToken,
+            new CookieOptions
+            {
+                HttpOnly = true, SameSite = SameSiteMode.Strict, Expires = DateTime.UtcNow.AddDays(7)
+            });
 
         return Ok(user);
     }
-    
+
     [HttpGet("me")]
     public async Task<IActionResult> GetMe()
     {
@@ -85,111 +82,87 @@ public class UserController : ControllerBase
 
         return Ok(user);
     }
-    
+
     [HttpGet("{id}")]
     public async Task<IActionResult> GetUser([FromRoute] long id)
     {
-        var command = new GetUserByIdQuery()
-        {
-            UserId = id
-        };
+        var command = new GetUserByIdQuery { UserId = id };
 
         var user = await _sender.Send(command);
 
         return Ok(user);
     }
-    
+
     [HttpPatch("{id}")]
     public async Task<IActionResult> UpdateUser([FromRoute] long id, [FromBody] UpdateUserDto dto)
     {
-        var command = new UpdateUserCommand()
+        var command = new UpdateUserCommand
         {
-            Id = id,
-            FirstName = dto.FirstName,
-            LastName = dto.LastName,
-            PhoneNumber = dto.PhoneNumber
+            Id = id, FirstName = dto.FirstName, LastName = dto.LastName, PhoneNumber = dto.PhoneNumber
         };
 
         var userId = await _sender.Send(command);
 
         return Ok(userId);
     }
-    
+
     [HttpPost("account-verification/req-token")]
     public async Task<IActionResult> RequestVerificationToken([FromBody] RequestUserVerificationTokenDto dto)
     {
-        var command = new ReqNewUserVerificationTokenCommand
-        {
-            Email = dto.Email
-        };
+        var command = new ReqNewUserVerificationTokenCommand { Email = dto.Email };
 
         await _sender.Send(command);
 
         return Accepted();
     }
-    
+
     [HttpPost("account-verification/verify/{token}")]
     public async Task<IActionResult> VerifyAccount([FromRoute] string token)
     {
-        var command = new VerifyUserAccountCommand
-        {
-            Token = token
-        };
+        var command = new VerifyUserAccountCommand { Token = token };
 
         var id = await _sender.Send(command);
 
         return Ok(id);
     }
-    
+
     [HttpGet("password-change/req-token")]
     public async Task<IActionResult> RequestPasswordResetToken([FromBody] RequestPasswordResetTokenDto dto)
     {
-        var command = new ReqUserPasswordChangeCommand
-        {
-            Email = dto.Email
-        };
+        var command = new ReqUserPasswordChangeCommand { Email = dto.Email };
 
         await _sender.Send(command);
 
         return Accepted();
     }
-    
+
     [HttpPost("password-change/change/{token}")]
     public async Task<IActionResult> ChangePassword([FromRoute] string token, [FromBody] ChangePasswordDto dto)
     {
-        var command = new ChangeUserPasswordCommand()
+        var command = new ChangeUserPasswordCommand
         {
-            Token = token,
-            NewPassword = dto.NewPassword,
-            ConfirmNewPassword = dto.ConfirmNewPassword
+            Token = token, NewPassword = dto.NewPassword, ConfirmNewPassword = dto.ConfirmNewPassword
         };
 
         var id = await _sender.Send(command);
 
         return Ok(id);
     }
-    
+
     [HttpPost("email-change/req-token")]
     public async Task<IActionResult> RequestEmailChangeToken([FromBody] RequestEmailChangeTokenDto dto)
     {
-        var command = new ReqUserEmailChangeCommand
-        {
-            Email = dto.Email
-        };
+        var command = new ReqUserEmailChangeCommand { Email = dto.Email };
 
         await _sender.Send(command);
 
         return Accepted();
     }
-    
+
     [HttpPost("email-change/change/{token}")]
     public async Task<IActionResult> ChangeEmail([FromRoute] string token, [FromBody] ChangeEmailDto dto)
     {
-        var command = new ChangeUserEmailCommand()
-        {
-            Token = token,
-            NewEmail = dto.NewEmail
-        };
+        var command = new ChangeUserEmailCommand { Token = token, NewEmail = dto.NewEmail };
 
         var id = await _sender.Send(command);
 

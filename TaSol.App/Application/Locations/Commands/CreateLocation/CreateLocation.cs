@@ -41,7 +41,7 @@ public class CreateLocationCommandHandler : IRequestHandler<CreateLocationComman
             State = request.State,
             Country = request.Country,
             Latitude = request.Latitude,
-            Longitude = request.Longitude,
+            Longitude = request.Longitude
         };
 
         _context.Locations.Add(entity);
