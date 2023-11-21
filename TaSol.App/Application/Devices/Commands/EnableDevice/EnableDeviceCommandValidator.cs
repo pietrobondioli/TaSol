@@ -1,4 +1,4 @@
-namespace Application.Commands.Commands.EnableDevice;
+namespace Application.Devices.Commands.EnableDevice;
 
 public class EnableDeviceCommandValidator : AbstractValidator<EnableDeviceCommand>
 {

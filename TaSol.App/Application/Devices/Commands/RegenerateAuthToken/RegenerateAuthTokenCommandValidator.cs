@@ -1,4 +1,4 @@
-namespace Application.Commands.Commands.RegenerateAuthToken;
+namespace Application.Devices.Commands.RegenerateAuthToken;
 
 public class RegenerateAuthTokenCommandValidator : AbstractValidator<RegenerateAuthTokenCommand>
 {

@@ -6,11 +6,11 @@ public record UpdateUserCommand : IRequest<long>
 {
     public long Id { get; init; }
 
-    public string FirstName { get; init; } = string.Empty;
+    public string? FirstName { get; init; } = null!;
 
-    public string LastName { get; init; } = string.Empty;
+    public string? LastName { get; init; } = null!;
 
-    public string PhoneNumber { get; init; } = string.Empty;
+    public string? PhoneNumber { get; init; } = null!;
 }
 
 public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, long>
@@ -33,9 +33,9 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, long>
 
         if (user.Id != _user.Id) throw new ForbiddenAccessException();
 
-        user.FirstName = request.FirstName;
-        user.LastName = request.LastName;
-        user.PhoneNumber = request.PhoneNumber;
+        if (request.FirstName != null) user.FirstName = request.FirstName;
+        if (request.LastName != null) user.LastName = request.LastName;
+        if (request.PhoneNumber != null) user.PhoneNumber = request.PhoneNumber;
 
         await _context.SaveChangesAsync(cancellationToken);
 

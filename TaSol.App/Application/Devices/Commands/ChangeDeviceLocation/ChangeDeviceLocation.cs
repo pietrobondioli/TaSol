@@ -1,8 +1,6 @@
-using Application.Locations.Commands.CreateLocation;
 using Domain.Entities;
-using Microsoft.VisualBasic;
 
-namespace Application.Commands.Commands.ChangeDeviceLocation;
+namespace Application.Devices.Commands.ChangeDeviceLocation;
 
 public record ChangeDeviceLocationCommand : IRequest<long>
 {
@@ -14,14 +12,12 @@ public record ChangeDeviceLocationCommand : IRequest<long>
 public class ChangeDeviceLocationCommandHandler : IRequestHandler<ChangeDeviceLocationCommand, long>
 {
     private readonly IApplicationDbContext _context;
-    private readonly IMediator _mediator;
     private readonly IUser _user;
 
-    public ChangeDeviceLocationCommandHandler(IUser user, IApplicationDbContext context, IMediator mediator)
+    public ChangeDeviceLocationCommandHandler(IUser user, IApplicationDbContext context)
     {
         _user = user;
         _context = context;
-        _mediator = mediator;
     }
 
     public async Task<long> Handle(ChangeDeviceLocationCommand request, CancellationToken cancellationToken)

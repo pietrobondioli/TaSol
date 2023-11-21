@@ -7,6 +7,7 @@ using Microsoft.OpenApi.Models;
 using Shared.Constants;
 using Shared.Settings;
 using Web.Common.Services;
+using Web.Configuration.Filters;
 
 namespace Web;
 
@@ -84,6 +85,9 @@ public static class DependencyInjection
                     new List<string>()
                 }
             });
+            
+            c.UseInlineDefinitionsForEnums();
+            c.SchemaFilter<EnumSchemaFilter>();
         });
 
         services.AddRouting(options => options.LowercaseUrls = true);

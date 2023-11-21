@@ -1,7 +1,7 @@
 
 using Application.Locations.Commands.CreateLocation;
 
-namespace Application.Commands.Commands.ChangeDeviceLocation;
+namespace Application.Devices.Commands.ChangeDeviceLocation;
 
 
 public class ChangeDeviceLocationCommandValidator : AbstractValidator<ChangeDeviceLocationCommand>
