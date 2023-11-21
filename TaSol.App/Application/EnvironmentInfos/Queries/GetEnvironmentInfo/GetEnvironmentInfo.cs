@@ -1,6 +1,6 @@
 using Application.EnvironmentInfos.Constants;
 
-namespace Application.Queries.Queries.GetEnvironmentInfo;
+namespace Application.EnvironmentInfos.Queries.GetEnvironmentInfo;
 
 public record GetEnvironmentInfoQuery : IRequest<GetEnvironmentInfoDto>
 {

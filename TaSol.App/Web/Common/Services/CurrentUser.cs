@@ -21,14 +21,14 @@ public class CurrentUser : IUser
 
     public string? Role => _httpContextAccessor.HttpContext?.User?.FindFirstValue(UserClaims.Role);
 
-    public static List<Claim> ExtractClaimsFromUser(User user)
+    public static List<Claim> GenerateClaims(string id, string email, string userName, string role)
     {
         var claims = new List<Claim>
         {
-            new(UserClaims.Id, user.Id.ToString()),
-            new(UserClaims.Email, user.Email),
-            new(UserClaims.UserName, user.UserName),
-            new(UserClaims.Role, user.Role)
+            new(UserClaims.Id, id),
+            new(UserClaims.Email, email),
+            new(UserClaims.UserName, userName),
+            new(UserClaims.Role, role)
         };
 
         return claims;

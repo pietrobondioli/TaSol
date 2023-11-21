@@ -1,10 +1,10 @@
 using Domain.Entities;
 
-namespace Application.Commands.Commands.EnableDevice;
+namespace Application.Devices.Commands.EnableDevice;
 
 public record EnableDeviceCommand : IRequest<long>
 {
-    public string DeviceId { get; init; }
+    public long DeviceId { get; init; }
 }
 
 public class EnableDeviceCommandHandler : IRequestHandler<EnableDeviceCommand, long>

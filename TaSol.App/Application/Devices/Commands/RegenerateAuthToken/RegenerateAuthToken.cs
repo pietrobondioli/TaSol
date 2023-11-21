@@ -1,10 +1,10 @@
 using Domain.Entities;
 
-namespace Application.Commands.Commands.RegenerateAuthToken;
+namespace Application.Devices.Commands.RegenerateAuthToken;
 
 public record RegenerateAuthTokenCommand : IRequest<long>
 {
-    public string DeviceId { get; init; } = null!;
+    public long DeviceId { get; init; }
 }
 
 public class RegenerateAuthTokenCommandHandler : IRequestHandler<RegenerateAuthTokenCommand, long>

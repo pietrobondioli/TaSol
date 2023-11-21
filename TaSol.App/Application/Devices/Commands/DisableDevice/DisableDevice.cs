@@ -4,7 +4,7 @@ namespace Application.Devices.Commands.DisableDevice;
 
 public record DisableDeviceCommand : IRequest<long>
 {
-    public string DeviceId { get; init; } = null!;
+    public long DeviceId { get; init; }
 }
 
 public class DisableDeviceCommandHandler : IRequestHandler<DisableDeviceCommand, long>

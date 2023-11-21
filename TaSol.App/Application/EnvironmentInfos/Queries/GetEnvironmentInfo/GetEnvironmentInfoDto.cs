@@ -1,6 +1,6 @@
 using Domain.Entities;
 
-namespace Application.Queries.Queries.GetEnvironmentInfo;
+namespace Application.EnvironmentInfos.Queries.GetEnvironmentInfo;
 
 public class GetEnvironmentInfoDto
 {

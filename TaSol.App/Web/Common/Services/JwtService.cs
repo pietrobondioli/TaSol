@@ -17,9 +17,9 @@ public class JwtService
         _jwtSettings = jwtSettings.Value;
     }
 
-    public string GenerateToken(User user)
+    public string GenerateToken(string id, string email, string userName, string role)
     {
-        var claims = CurrentUser.ExtractClaimsFromUser(user);
+        var claims = CurrentUser.GenerateClaims(id, email, userName, role);
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Secret));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
