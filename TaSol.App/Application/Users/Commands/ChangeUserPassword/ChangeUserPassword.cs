@@ -26,15 +26,25 @@ public class ChangeUserPasswordCommandHandler : IRequestHandler<ChangeUserPasswo
 
     public async Task<long> Handle(ChangeUserPasswordCommand request, CancellationToken cancellationToken)
     {
-        var token = await _context.UserPasswordResetTokens.FirstOrDefaultAsync(x => x.Token == request.Token, cancellationToken);
+        var token = await _context.UserPasswordResetTokens.FirstOrDefaultAsync(x => x.Token == request.Token,
+            cancellationToken);
 
-        if (token == null) throw new NotFoundException(nameof(UserPasswordResetToken), request.Token);
+        if (token == null)
+        {
+            throw new NotFoundException(nameof(UserPasswordResetToken), request.Token);
+        }
 
-        if (!token.IsActive) throw new ConflictException("Invalid token");
+        if (!token.IsActive)
+        {
+            throw new ConflictException("Invalid token");
+        }
 
         var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == token.UserId, cancellationToken);
 
-        if (user == null) throw new NotFoundException(nameof(User), token.UserId);
+        if (user == null)
+        {
+            throw new NotFoundException(nameof(User), token.UserId);
+        }
 
         user.PasswordHash = _securityUtils.HashPassword(request.NewPassword);
         user.AddDomainEvent(new UserChangedPasswordEvent(user));

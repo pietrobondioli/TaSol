@@ -9,7 +9,8 @@ public record GetDevicesWithPaginationQuery : IRequest<GetDevicesWithPaginationD
     public string DeviceName { get; init; }
 }
 
-public class GetDevicesWithPaginationQueryHandler : IRequestHandler<GetDevicesWithPaginationQuery, GetDevicesWithPaginationDto>
+public class
+    GetDevicesWithPaginationQueryHandler : IRequestHandler<GetDevicesWithPaginationQuery, GetDevicesWithPaginationDto>
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;

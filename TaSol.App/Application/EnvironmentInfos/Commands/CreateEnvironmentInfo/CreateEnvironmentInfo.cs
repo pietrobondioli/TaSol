@@ -33,9 +33,13 @@ public class CreateEnvironmentInfoCommandHandler : IRequestHandler<CreateEnviron
 
         var device = await _context.Devices
             .Include(d => d.Owner)
-            .FirstOrDefaultAsync(d => _securityUtils.VerifyPassword(request.AuthToken, d.AuthTokenHash), cancellationToken);
+            .FirstOrDefaultAsync(d => _securityUtils.VerifyPassword(request.AuthToken, d.AuthTokenHash),
+                cancellationToken);
 
-        if (device == null) throw new NotFoundException(nameof(Device), request.AuthToken);
+        if (device == null)
+        {
+            throw new NotFoundException(nameof(Device), request.AuthToken);
+        }
 
         var entity = new EnvironmentInfo
         {

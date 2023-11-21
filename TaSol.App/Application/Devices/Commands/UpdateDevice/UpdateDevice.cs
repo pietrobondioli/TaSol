@@ -26,9 +26,15 @@ public class UpdateDeviceCommandHandler : IRequestHandler<UpdateDeviceCommand, l
     {
         var entity = await _context.Devices.FindAsync(request.DeviceId, cancellationToken);
 
-        if (entity == null) throw new NotFoundException(nameof(Device), request.DeviceId);
+        if (entity == null)
+        {
+            throw new NotFoundException(nameof(Device), request.DeviceId);
+        }
 
-        if (entity.OwnerId != _user.Id) throw new ForbiddenAccessException();
+        if (entity.OwnerId != _user.Id)
+        {
+            throw new ForbiddenAccessException();
+        }
 
         entity.Name = request.Name;
         entity.Description = request.Description;

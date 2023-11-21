@@ -1,5 +1,3 @@
-using Application.EnvironmentInfos.Constants;
-
 namespace Application.EnvironmentInfos.Queries.GetEnvironmentInfo;
 
 public class GetEnvironmentInfoQueryValidator : AbstractValidator<GetEnvironmentInfoQuery>

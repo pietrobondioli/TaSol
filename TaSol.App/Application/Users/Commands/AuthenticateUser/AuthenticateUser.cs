@@ -15,9 +15,9 @@ public class AuthenticateUserCommandHandler : IRequestHandler<AuthenticateUserCo
 {
     private readonly IApplicationDbContext _context;
 
-    private readonly ISecurityUtils _securityUtils;
-    
     private readonly IMapper _mapper;
+
+    private readonly ISecurityUtils _securityUtils;
 
     public AuthenticateUserCommandHandler(IApplicationDbContext context, ISecurityUtils securityUtils, IMapper mapper)
     {
@@ -28,11 +28,18 @@ public class AuthenticateUserCommandHandler : IRequestHandler<AuthenticateUserCo
 
     public async Task<UserDto> Handle(AuthenticateUserCommand request, CancellationToken cancellationToken)
     {
-        var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == request.UserName || x.Email == request.Email, cancellationToken);
+        var user = await _context.Users.FirstOrDefaultAsync(
+            x => x.UserName == request.UserName || x.Email == request.Email, cancellationToken);
 
-        if (user == null) throw new NotFoundException(nameof(User), request.UserName);
+        if (user == null)
+        {
+            throw new NotFoundException(nameof(User), request.UserName);
+        }
 
-        if (!_securityUtils.VerifyPassword(request.Password, user.PasswordHash)) throw new ConflictException("Credentials are invalid");
+        if (!_securityUtils.VerifyPassword(request.Password, user.PasswordHash))
+        {
+            throw new ConflictException("Credentials are invalid");
+        }
 
         return _mapper.Map<UserDto>(user);
     }

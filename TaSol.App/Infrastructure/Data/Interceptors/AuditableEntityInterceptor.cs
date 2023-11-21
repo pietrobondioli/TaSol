@@ -1,6 +1,5 @@
 ﻿using Application.Common.Interfaces;
 using Domain.Common;
-using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -33,17 +32,28 @@ public class AuditableEntityInterceptor : SaveChangesInterceptor
 
     public void UpdateEntities(DbContext? context)
     {
-        if (context == null) return;
+        if (context == null)
+        {
+            return;
+        }
 
         foreach (var entry in context.ChangeTracker.Entries<BaseAuditableEntity>())
         {
-            if (_user.Id == null) throw new Exception("Could not get current user id");
+            if (_user.Id == null)
+            {
+                throw new Exception("Could not get current user id");
+            }
 
-            if (entry.State == EntityState.Added) entry.Entity.SetCreated(_user.Id.Value);
+            if (entry.State == EntityState.Added)
+            {
+                entry.Entity.SetCreated(_user.Id.Value);
+            }
 
             if (entry.State == EntityState.Added || entry.State == EntityState.Modified ||
                 entry.HasChangedOwnedEntities())
+            {
                 entry.Entity.SetLastModified(_user.Id.Value);
+            }
 
             if (entry.State == EntityState.Deleted)
             {

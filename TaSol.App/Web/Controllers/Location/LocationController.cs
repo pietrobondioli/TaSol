@@ -19,35 +19,31 @@ public class LocationController : ControllerBase
         _logger = logger;
         _sender = sender;
     }
-    
+
     [HttpGet]
-    public async Task<IActionResult> GetPaginatedAsync([FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] string searchTerm)
+    public async Task<IActionResult> GetPaginatedAsync([FromQuery] int pageNumber, [FromQuery] int pageSize,
+        [FromQuery] string searchTerm)
     {
         var query = new GetLocationsWithPaginationQuery
         {
-            PageNumber = pageNumber,
-            PageSize = pageSize,
-            SearchTerm = searchTerm
+            PageNumber = pageNumber, PageSize = pageSize, SearchTerm = searchTerm
         };
 
         var result = await _sender.Send(query);
 
         return Ok(result);
     }
-    
+
     [HttpGet("{id}")]
     public async Task<IActionResult> GetAsync([FromRoute] string id)
     {
-        var query = new GetLocationByIdQuery
-        {
-            LocationId = int.Parse(id)
-        };
+        var query = new GetLocationByIdQuery { LocationId = int.Parse(id) };
 
         var result = await _sender.Send(query);
 
         return Ok(result);
     }
-    
+
     [HttpPost]
     public async Task<IActionResult> CreateAsync([FromBody] CreateLocationDto body)
     {

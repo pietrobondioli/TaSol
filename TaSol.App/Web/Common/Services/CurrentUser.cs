@@ -1,6 +1,5 @@
 ﻿using System.Security.Claims;
 using Application.Common.Interfaces;
-using Domain.Entities;
 
 namespace Web.Common.Services;
 
@@ -13,13 +12,13 @@ public class CurrentUser : IUser
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public long? Id => Convert.ToInt64(_httpContextAccessor.HttpContext?.User?.FindFirstValue(UserClaims.Id));
-
     public string? Email => _httpContextAccessor.HttpContext?.User?.FindFirstValue(UserClaims.Email);
 
     public string? UserName => _httpContextAccessor.HttpContext?.User?.FindFirstValue(UserClaims.UserName);
 
     public string? Role => _httpContextAccessor.HttpContext?.User?.FindFirstValue(UserClaims.Role);
+
+    public long? Id => Convert.ToInt64(_httpContextAccessor.HttpContext?.User?.FindFirstValue(UserClaims.Id));
 
     public static List<Claim> GenerateClaims(string id, string email, string userName, string role)
     {

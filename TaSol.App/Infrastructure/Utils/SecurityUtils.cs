@@ -1,5 +1,5 @@
-using Application.Common.Interfaces;
 using System.Security.Cryptography;
+using Application.Common.Interfaces;
 
 namespace Infrastructure.Utils;
 
@@ -11,11 +11,11 @@ public class SecurityUtils : ISecurityUtils
 
     public string HashPassword(string password)
     {
-        byte[] salt = RandomNumberGenerator.GetBytes(SaltSize);
+        var salt = RandomNumberGenerator.GetBytes(SaltSize);
 
         using var pbkdf2 = new Rfc2898DeriveBytes(password, salt, Iterations, HashAlgorithmName.SHA256);
-        byte[] hash = pbkdf2.GetBytes(KeySize);
-        byte[] hashBytes = new byte[SaltSize + KeySize];
+        var hash = pbkdf2.GetBytes(KeySize);
+        var hashBytes = new byte[SaltSize + KeySize];
         Array.Copy(salt, 0, hashBytes, 0, SaltSize);
         Array.Copy(hash, 0, hashBytes, SaltSize, KeySize);
 
@@ -24,14 +24,14 @@ public class SecurityUtils : ISecurityUtils
 
     public bool VerifyPassword(string password, string passwordHash)
     {
-        byte[] hashBytes = Convert.FromBase64String(passwordHash);
-        byte[] salt = new byte[SaltSize];
+        var hashBytes = Convert.FromBase64String(passwordHash);
+        var salt = new byte[SaltSize];
         Array.Copy(hashBytes, 0, salt, 0, SaltSize);
 
         using var pbkdf2 = new Rfc2898DeriveBytes(password, salt, Iterations, HashAlgorithmName.SHA256);
-        byte[] hash = pbkdf2.GetBytes(KeySize);
+        var hash = pbkdf2.GetBytes(KeySize);
 
-        for (int i = 0; i < KeySize; i++)
+        for (var i = 0; i < KeySize; i++)
         {
             if (hashBytes[i + SaltSize] != hash[i])
             {
@@ -47,10 +47,11 @@ public class SecurityUtils : ISecurityUtils
         const string validChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
         var bytes = RandomNumberGenerator.GetBytes(length);
         var chars = new char[length];
-        for (int i = 0; i < length; i++)
+        for (var i = 0; i < length; i++)
         {
             chars[i] = validChars[bytes[i] % validChars.Length];
         }
+
         return new string(chars);
     }
 
@@ -59,5 +60,4 @@ public class SecurityUtils : ISecurityUtils
         var bytes = RandomNumberGenerator.GetBytes(length);
         return Convert.ToBase64String(bytes);
     }
-
 }

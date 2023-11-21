@@ -23,7 +23,10 @@ public class GetUserByIdQueryHandler : IRequestHandler<GetUserByIdQuery, UserDto
         var user = await _context.Users
             .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
 
-        if (user == null) throw new NotFoundException(nameof(User), request.UserId);
+        if (user == null)
+        {
+            throw new NotFoundException(nameof(User), request.UserId);
+        }
 
         return _mapper.Map<UserDto>(user);
     }

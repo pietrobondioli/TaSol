@@ -22,9 +22,15 @@ public class EnableDeviceCommandHandler : IRequestHandler<EnableDeviceCommand, l
     {
         var entity = await _context.Devices.FindAsync(request.DeviceId, cancellationToken);
 
-        if (entity == null) throw new NotFoundException(nameof(Device), request.DeviceId);
+        if (entity == null)
+        {
+            throw new NotFoundException(nameof(Device), request.DeviceId);
+        }
 
-        if (entity.OwnerId != _user.Id) throw new ForbiddenAccessException();
+        if (entity.OwnerId != _user.Id)
+        {
+            throw new ForbiddenAccessException();
+        }
 
         entity.IsActive = true;
 

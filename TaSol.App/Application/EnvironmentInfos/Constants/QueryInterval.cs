@@ -10,7 +10,7 @@ public class QueryInterval
         Every4Hours,
         Every12Hours,
         EveryDay,
-        EveryWeek,
+        EveryWeek
     }
 
     public static int GetIntervalDuration(Options interval)
@@ -24,7 +24,7 @@ public class QueryInterval
             Options.Every12Hours => 720,
             Options.EveryDay => 1440,
             Options.EveryWeek => 10080,
-            _ => 5,
+            _ => 5
         };
     }
 }

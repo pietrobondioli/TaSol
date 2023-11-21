@@ -2,7 +2,9 @@ using Domain.Entities;
 
 namespace Application.Queries.Queries.GetMe;
 
-public record GetMeQuery : IRequest<GetMeDto> { }
+public record GetMeQuery : IRequest<GetMeDto>
+{
+}
 
 public class GetMeQueryHandler : IRequestHandler<GetMeQuery, GetMeDto>
 {
@@ -22,7 +24,10 @@ public class GetMeQueryHandler : IRequestHandler<GetMeQuery, GetMeDto>
         var user = await _context.Users
             .FirstOrDefaultAsync(x => x.Id == _user.Id, cancellationToken);
 
-        if (user == null) throw new NotFoundException(nameof(User), _user.Id);
+        if (user == null)
+        {
+            throw new NotFoundException(nameof(User), _user.Id);
+        }
 
         return _mapper.Map<GetMeDto>(user);
     }

@@ -23,10 +23,12 @@ public class LoggingBehaviour<TRequest> : IRequestPreProcessor<TRequest> where T
         var userName = string.Empty;
 
         if (!userId.Equals(default))
+        {
             userName = await _context.Users
                 .Where(u => u.Id == userId)
                 .Select(u => u.UserName)
                 .FirstOrDefaultAsync(cancellationToken);
+        }
 
         _logger.LogInformation("CleanArchitecture Request: {Name} {@UserId} {@UserName} {@Request}",
             requestName, userId, userName, request);

@@ -19,15 +19,25 @@ public class VerifyUserAccountCommandHandler : IRequestHandler<VerifyUserAccount
 
     public async Task<long> Handle(VerifyUserAccountCommand request, CancellationToken cancellationToken)
     {
-        var token = await _context.UserEmailVerificationTokens.FirstOrDefaultAsync(x => x.Token == request.Token, cancellationToken);
+        var token = await _context.UserEmailVerificationTokens.FirstOrDefaultAsync(x => x.Token == request.Token,
+            cancellationToken);
 
-        if (token == null) throw new NotFoundException(nameof(UserEmailVerificationToken), request.Token);
+        if (token == null)
+        {
+            throw new NotFoundException(nameof(UserEmailVerificationToken), request.Token);
+        }
 
-        if (!token.IsActive) throw new ConflictException("Invalid token");
+        if (!token.IsActive)
+        {
+            throw new ConflictException("Invalid token");
+        }
 
         var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == token.UserId, cancellationToken);
 
-        if (user == null) throw new NotFoundException(nameof(User), token.UserId);
+        if (user == null)
+        {
+            throw new NotFoundException(nameof(User), token.UserId);
+        }
 
         user.IsVerified = true;
         user.AddDomainEvent(new UserVerifiedAccountEvent(user));

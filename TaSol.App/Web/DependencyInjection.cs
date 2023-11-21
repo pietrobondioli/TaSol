@@ -30,7 +30,7 @@ public static class DependencyInjection
     public static IServiceCollection AddWebServices(this IServiceCollection services, IConfiguration configuration)
     {
         ConfigureDIs(services);
-        
+
         ConfigureJwtAuthentication(services, configuration);
 
         services.AddDatabaseDeveloperPageExceptionFilter();
@@ -57,11 +57,7 @@ public static class DependencyInjection
 
         services.AddSwaggerGen(c =>
         {
-            c.SwaggerDoc("v1", new OpenApiInfo
-            {
-                Title = "TaSol API",
-                Version = "v1"
-            });
+            c.SwaggerDoc("v1", new OpenApiInfo { Title = "TaSol API", Version = "v1" });
 
             c.AddSecurityDefinition("StaticApiKey",
                 new OpenApiSecurityScheme
@@ -85,7 +81,7 @@ public static class DependencyInjection
                     new List<string>()
                 }
             });
-            
+
             c.UseInlineDefinitionsForEnums();
             c.SchemaFilter<EnumSchemaFilter>();
         });
