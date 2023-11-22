@@ -37,7 +37,11 @@ public static class DependencyInjection
                 return;
             }
 
-            options.UseSqlServer(connectionStrings.Database);
+            options.UseSqlServer(connectionStrings.Database, sqlOptions =>
+            {
+                sqlOptions.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName);
+                sqlOptions.EnableRetryOnFailure(15, TimeSpan.FromSeconds(30), null);
+            });
         });
 
         services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
