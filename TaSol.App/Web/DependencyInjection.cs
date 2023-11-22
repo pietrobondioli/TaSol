@@ -69,6 +69,17 @@ public static class DependencyInjection
                     Type = SecuritySchemeType.ApiKey
                 });
 
+            c.AddSecurityDefinition("JwtBearer",
+                new OpenApiSecurityScheme
+                {
+                    Description =
+                        "API Jwt Authorization header using the JwtKey scheme. Example: \"Authorization: Bearer {api_key}\"",
+                    In = ParameterLocation.Header,
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey
+                }
+            );
+
             c.AddSecurityRequirement(new OpenApiSecurityRequirement
             {
                 {
@@ -82,12 +93,26 @@ public static class DependencyInjection
                     new List<string>()
                 }
             });
+            
+            c.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "JwtBearer" }
+                    },
+                    new List<string>()
+                }
+            });
 
             c.UseInlineDefinitionsForEnums();
             c.SchemaFilter<EnumSchemaFilter>();
         });
 
-        services.AddRouting(options => options.LowercaseUrls = true);
+        services.AddRouting(o =>
+        {
+            o.LowercaseUrls = true;
+        });
 
         services.AddControllers();
 

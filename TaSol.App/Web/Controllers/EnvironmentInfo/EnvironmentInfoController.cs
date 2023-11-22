@@ -2,6 +2,7 @@ using Application.EnvironmentInfos.Commands.CreateEnvironmentInfo;
 using Application.EnvironmentInfos.Constants;
 using Application.EnvironmentInfos.Queries.GetEnvironmentInfo;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Web.Controllers.EnvironmentInfo.DTOs;
 
@@ -9,6 +10,7 @@ namespace Web.Controllers.EnvironmentInfo;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize]
 public class EnvironmentInfoController : ControllerBase
 {
     private readonly ILogger<EnvironmentInfoController> _logger;
@@ -21,6 +23,7 @@ public class EnvironmentInfoController : ControllerBase
     }
 
     [HttpGet]
+    [AllowAnonymous]
     public async Task<IActionResult> GetAsync([FromQuery] long locationId, [FromQuery] long? deviceId,
         [FromQuery] QueryRange.Options range, [FromQuery] QueryInterval.Options interval)
     {
@@ -35,6 +38,7 @@ public class EnvironmentInfoController : ControllerBase
     }
 
     [HttpPost]
+    [AllowAnonymous]
     public async Task<IActionResult> CreateAsync([FromHeader] string authHeader,
         [FromBody] CreateEnvironmentInfoDto body)
     {

@@ -7,6 +7,7 @@ using Application.Devices.Commands.UpdateDevice;
 using Application.Queries.Queries.GetDeviceById;
 using Application.Queries.Queries.GetDevicesWithPagination;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Web.Controllers.Devices.DTOs;
 
@@ -14,6 +15,7 @@ namespace Web.Controllers.Devices;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize]
 public class DeviceController : ControllerBase
 {
     private readonly ILogger<DeviceController> _logger;
@@ -26,6 +28,7 @@ public class DeviceController : ControllerBase
     }
 
     [HttpGet]
+    [AllowAnonymous]
     public async Task<IActionResult> GetPaginatedAsync([FromQuery] int pageNumber, [FromQuery] int pageSize,
         [FromQuery] string deviceName)
     {
@@ -40,6 +43,7 @@ public class DeviceController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [AllowAnonymous]
     public async Task<IActionResult> GetAsync([FromRoute] string id)
     {
         var query = new GetDeviceByIdQuery { DeviceId = long.Parse(id) };

@@ -18,8 +18,10 @@ public class CurrentUser : IUser
 
     public string? Role => _httpContextAccessor.HttpContext?.User?.FindFirstValue(UserClaims.Role);
 
-    public long? Id => Convert.ToInt64(_httpContextAccessor.HttpContext?.User?.FindFirstValue(UserClaims.Id));
-
+    public long? Id => _httpContextAccessor.HttpContext?.User?.FindFirstValue(UserClaims.Id) is { } id
+        ? Convert.ToInt64(id)
+        : null;
+    
     public static List<Claim> GenerateClaims(string id, string email, string userName, string role)
     {
         var claims = new List<Claim>

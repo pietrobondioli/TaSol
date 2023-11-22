@@ -1,7 +1,9 @@
+using Application.Common.Security;
 using Domain.Entities;
 
 namespace Application.Queries.Queries.GetMe;
 
+[Authorize]
 public record GetMeQuery : IRequest<GetMeDto>
 {
 }

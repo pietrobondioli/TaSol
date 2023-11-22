@@ -10,6 +10,7 @@ using Application.Users.Commands.UpdateUser;
 using Application.Users.Commands.VerifyUserAccount;
 using Application.Users.Queries.GetUserById;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Web.Common.Interfaces;
 using Web.Controllers.User.DTOs;
@@ -18,6 +19,7 @@ namespace Web.Controllers.User;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize]
 public class UserController : ControllerBase
 {
     private readonly HttpContext _httpContext;
@@ -35,6 +37,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("register")]
+    [AllowAnonymous]
     public async Task<IActionResult> Register([FromBody] RegisterUserDto dto)
     {
         var command = new RegisterUserCommand
@@ -53,6 +56,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("authenticate")]
+    [AllowAnonymous]
     public async Task<IActionResult> Authenticate([FromBody] AuthenticateUserDto dto)
     {
         var command = new AuthenticateUserCommand
@@ -64,13 +68,7 @@ public class UserController : ControllerBase
 
         var jwtToken = _jwtService.GenerateToken(user.Id, user.UserName, user.Email, user.Role);
 
-        _httpContext.Response.Cookies.Append("jwt", jwtToken,
-            new CookieOptions
-            {
-                HttpOnly = true, SameSite = SameSiteMode.Strict, Expires = DateTime.UtcNow.AddDays(7)
-            });
-
-        return Ok(user);
+        return Ok(jwtToken);
     }
 
     [HttpGet("me")]
@@ -107,6 +105,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("account-verification/req-token")]
+    [AllowAnonymous]
     public async Task<IActionResult> RequestVerificationToken([FromBody] RequestUserVerificationTokenDto dto)
     {
         var command = new ReqNewUserVerificationTokenCommand { Email = dto.Email };
@@ -117,6 +116,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("account-verification/verify/{token}")]
+    [AllowAnonymous]
     public async Task<IActionResult> VerifyAccount([FromRoute] string token)
     {
         var command = new VerifyUserAccountCommand { Token = token };
@@ -127,6 +127,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("password-change/req-token")]
+    [AllowAnonymous]
     public async Task<IActionResult> RequestPasswordResetToken([FromBody] RequestPasswordResetTokenDto dto)
     {
         var command = new ReqUserPasswordChangeCommand { Email = dto.Email };
@@ -137,6 +138,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("password-change/change/{token}")]
+    [AllowAnonymous]
     public async Task<IActionResult> ChangePassword([FromRoute] string token, [FromBody] ChangePasswordDto dto)
     {
         var command = new ChangeUserPasswordCommand
@@ -150,6 +152,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("email-change/req-token")]
+    [AllowAnonymous]
     public async Task<IActionResult> RequestEmailChangeToken([FromBody] RequestEmailChangeTokenDto dto)
     {
         var command = new ReqUserEmailChangeCommand { Email = dto.Email };
@@ -160,6 +163,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("email-change/change/{token}")]
+    [AllowAnonymous]
     public async Task<IActionResult> ChangeEmail([FromRoute] string token, [FromBody] ChangeEmailDto dto)
     {
         var command = new ChangeUserEmailCommand { Token = token, NewEmail = dto.NewEmail };

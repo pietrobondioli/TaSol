@@ -6,17 +6,17 @@ public abstract class BaseAuditableEntity : BaseEntity
 {
     public DateTimeOffset CreatedAt { get; set; }
 
-    public long CreatedBy { get; set; }
+    public long? CreatedBy { get; set; }
 
     [ForeignKey(nameof(CreatedBy))]
-    public virtual User CreatedByUser { get; set; }
+    public virtual User? CreatedByUser { get; set; }
 
     public DateTimeOffset LastModifiedAt { get; set; }
 
-    public long LastModifiedBy { get; set; }
+    public long? LastModifiedBy { get; set; }
 
     [ForeignKey(nameof(LastModifiedBy))]
-    public virtual User LastModifiedByUser { get; set; }
+    public virtual User? LastModifiedByUser { get; set; }
 
     public bool IsDeleted { get; set; }
 
@@ -27,19 +27,19 @@ public abstract class BaseAuditableEntity : BaseEntity
     [ForeignKey(nameof(DeletedBy))]
     public virtual User? DeletedByUser { get; set; }
 
-    public void SetCreated(long userId)
+    public void SetCreated(long? userId)
     {
         CreatedAt = DateTimeOffset.UtcNow;
         CreatedBy = userId;
     }
 
-    public void SetLastModified(long userId)
+    public void SetLastModified(long? userId)
     {
         LastModifiedAt = DateTimeOffset.UtcNow;
         LastModifiedBy = userId;
     }
 
-    public void SetDeleted(long userId)
+    public void SetDeleted(long? userId)
     {
         IsDeleted = true;
         DeletedAt = DateTimeOffset.UtcNow;
