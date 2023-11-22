@@ -31,6 +31,12 @@ public static class DependencyInjection
         {
             options.AddInterceptors(sp.GetServices<ISaveChangesInterceptor>());
 
+            if (env.IsDevelopment() && string.IsNullOrEmpty(connectionStrings.Database))
+            {
+                options.UseInMemoryDatabase("ApplicationDbContext");
+                return;
+            }
+
             options.UseSqlServer(connectionStrings.Database);
         });
 

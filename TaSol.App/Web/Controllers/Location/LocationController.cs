@@ -2,6 +2,7 @@ using Application.Locations.Commands.CreateLocation;
 using Application.Queries.Queries.GetLocationById;
 using Application.Queries.Queries.GetLocationsWithPagination;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Web.Controllers.Location.DTOs;
 
@@ -9,6 +10,7 @@ namespace Web.Controllers.Location;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize]
 public class LocationController : ControllerBase
 {
     private readonly ILogger<LocationController> _logger;
@@ -21,6 +23,7 @@ public class LocationController : ControllerBase
     }
 
     [HttpGet]
+    [AllowAnonymous]
     public async Task<IActionResult> GetPaginatedAsync([FromQuery] int pageNumber, [FromQuery] int pageSize,
         [FromQuery] string searchTerm)
     {
@@ -35,6 +38,7 @@ public class LocationController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [AllowAnonymous]
     public async Task<IActionResult> GetAsync([FromRoute] string id)
     {
         var query = new GetLocationByIdQuery { LocationId = int.Parse(id) };

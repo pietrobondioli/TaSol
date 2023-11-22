@@ -39,25 +39,20 @@ public class AuditableEntityInterceptor : SaveChangesInterceptor
 
         foreach (var entry in context.ChangeTracker.Entries<BaseAuditableEntity>())
         {
-            if (_user.Id == null)
-            {
-                throw new Exception("Could not get current user id");
-            }
-
             if (entry.State == EntityState.Added)
             {
-                entry.Entity.SetCreated(_user.Id.Value);
+                entry.Entity.SetCreated(_user.Id);
             }
 
             if (entry.State == EntityState.Added || entry.State == EntityState.Modified ||
                 entry.HasChangedOwnedEntities())
             {
-                entry.Entity.SetLastModified(_user.Id.Value);
+                entry.Entity.SetLastModified(_user.Id);
             }
 
             if (entry.State == EntityState.Deleted)
             {
-                entry.Entity.SetDeleted(_user.Id.Value);
+                entry.Entity.SetDeleted(_user.Id);
                 entry.State = EntityState.Modified;
             }
         }
