@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Shared.Constants;
 using Shared.Settings;
+using Web.Common.Interfaces;
 using Web.Common.Services;
 using Web.Configuration.Filters;
 
@@ -102,6 +103,8 @@ public static class DependencyInjection
         services.AddScoped<IUser, CurrentUser>();
 
         services.AddSingleton<ISecurityUtils, SecurityUtils>();
+
+        services.AddSingleton<IJwtService, JwtService>();
     }
 
     private static void ConfigureJwtAuthentication(IServiceCollection services, IConfiguration configuration)

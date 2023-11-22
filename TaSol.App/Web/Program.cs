@@ -35,6 +35,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseExceptionHandler(options => { });
+
 app.UseHealthChecks("/health");
 
 app.Use(async (context, next) =>

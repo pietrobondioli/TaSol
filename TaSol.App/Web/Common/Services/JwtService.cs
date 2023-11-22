@@ -4,10 +4,11 @@ using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Shared.Settings;
+using Web.Common.Interfaces;
 
 namespace Web.Common.Services;
 
-public class JwtService
+public class JwtService : IJwtService
 {
     private readonly JwtSettings _jwtSettings;
 
