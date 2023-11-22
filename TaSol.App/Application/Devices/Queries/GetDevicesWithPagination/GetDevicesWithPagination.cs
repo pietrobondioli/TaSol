@@ -1,4 +1,4 @@
-namespace Application.Queries.Queries.GetDevicesWithPagination;
+namespace Application.Devices.Queries.GetDevicesWithPagination;
 
 public record GetDevicesWithPaginationQuery : IRequest<GetDevicesWithPaginationDto>
 {
@@ -6,7 +6,7 @@ public record GetDevicesWithPaginationQuery : IRequest<GetDevicesWithPaginationD
 
     public int PageSize { get; init; }
 
-    public string DeviceName { get; init; }
+    public string? DeviceName { get; init; }
 }
 
 public class
@@ -34,6 +34,7 @@ public class
         var devices = await query
             .Skip((request.PageNumber - 1) * request.PageSize)
             .Take(request.PageSize)
+            .Include(x => x.Location)
             .ToListAsync(cancellationToken);
 
         return new GetDevicesWithPaginationDto(_mapper.Map<List<DeviceDto>>(devices), devices.Count,

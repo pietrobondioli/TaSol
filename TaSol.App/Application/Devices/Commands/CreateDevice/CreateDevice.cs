@@ -3,7 +3,7 @@ using Domain.Events;
 
 namespace Application.Devices.Commands.CreateDevice;
 
-public record CreateDeviceCommand : IRequest<long>
+public record CreateDeviceCommand : IRequest<(long, string)>
 {
     public string Name { get; init; }
 
@@ -12,7 +12,7 @@ public record CreateDeviceCommand : IRequest<long>
     public long LocationId { get; init; }
 }
 
-public class CreateDeviceCommandHandler : IRequestHandler<CreateDeviceCommand, long>
+public class CreateDeviceCommandHandler : IRequestHandler<CreateDeviceCommand, (long, string)>
 {
     private readonly IApplicationDbContext _context;
 
@@ -27,15 +27,17 @@ public class CreateDeviceCommandHandler : IRequestHandler<CreateDeviceCommand, l
         _securityUtils = securityUtils;
     }
 
-    public async Task<long> Handle(CreateDeviceCommand request, CancellationToken cancellationToken)
+    public async Task<(long, string)> Handle(CreateDeviceCommand request, CancellationToken cancellationToken)
     {
+        var token = _securityUtils.GenerateRandomApiKey();
+        
         var entity = new Device
         {
             Name = request.Name,
             Description = request.Description,
             LocationId = request.LocationId,
             OwnerId = _user.Id!.Value,
-            AuthTokenHash = _securityUtils.HashPassword(_securityUtils.GenerateRandomApiKey())
+            AuthTokenHash = _securityUtils.HashPassword(token)
         };
 
         entity.AddDomainEvent(new DeviceCreatedEvent(entity));
@@ -44,6 +46,6 @@ public class CreateDeviceCommandHandler : IRequestHandler<CreateDeviceCommand, l
 
         await _context.SaveChangesAsync(cancellationToken);
 
-        return entity.Id;
+        return (entity.Id, token);
     }
 }

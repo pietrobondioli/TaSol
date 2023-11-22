@@ -34,7 +34,6 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
         ConfigureRelationships(builder);
-        ConfigureSoftDeleteFilter(builder);
 
         base.OnModelCreating(builder);
     }
@@ -90,9 +89,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
             .OnDelete(DeleteBehavior.NoAction);
 
         foreach (var auditableEntity in builder.Model.GetEntityTypes()
-                     .Where(e => typeof(BaseAuditableEntity).IsAssignableFrom(e.ClrType) ||
-                                 typeof(BaseOwnedAuditableEntity).IsAssignableFrom(e.ClrType) ||
-                                 typeof(BaseUniqueConsumableToken).IsAssignableFrom(e.ClrType))
+                     .Where(e => typeof(BaseAuditableEntity).IsAssignableFrom(e.ClrType))
                      .Select(e => e.ClrType))
         {
             builder.Entity(auditableEntity)
@@ -112,20 +109,6 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
                 .WithMany()
                 .HasForeignKey(nameof(BaseAuditableEntity.DeletedBy))
                 .OnDelete(DeleteBehavior.NoAction);
-        }
-    }
-
-    private void ConfigureSoftDeleteFilter(ModelBuilder builder)
-    {
-        foreach (var ClrType in builder.Model.GetEntityTypes()
-                     .Where(e => typeof(BaseAuditableEntity).IsAssignableFrom(e.ClrType)).Select(e => e.ClrType))
-        {
-            var parameter = Expression.Parameter(ClrType, "e");
-            var body = Expression.MakeMemberAccess(parameter, ClrType.GetProperty("IsDeleted"));
-            var checkDeleted = Expression.MakeUnary(ExpressionType.Not, body, typeof(bool));
-            var lambda = Expression.Lambda(checkDeleted, parameter);
-
-            builder.Entity(ClrType).HasQueryFilter(lambda);
         }
     }
 }

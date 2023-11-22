@@ -1,4 +1,4 @@
-namespace Application.Queries.Queries.GetLocationById;
+namespace Application.Locations.Queries.GetLocationById;
 
 public class GetLocationByIdQueryValidator : AbstractValidator<GetLocationByIdQuery>
 {

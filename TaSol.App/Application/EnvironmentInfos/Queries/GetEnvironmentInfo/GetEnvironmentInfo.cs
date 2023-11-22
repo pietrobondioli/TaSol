@@ -32,7 +32,7 @@ public class GetEnvironmentInfoQueryHandler : IRequestHandler<GetEnvironmentInfo
             .Where(e => e.LocationId == request.LocationId &&
                         (!request.DeviceId.HasValue || e.DeviceId == request.DeviceId.Value) &&
                         e.TimeStamp >= startDate && e.TimeStamp <= endDate);
-
+        
         var interval = QueryInterval.GetIntervalDuration(request.Interval);
         var groupedData = await query
             .GroupBy(e => new { Interval = EF.Functions.DateDiffMinute(startDate, e.TimeStamp) / interval })

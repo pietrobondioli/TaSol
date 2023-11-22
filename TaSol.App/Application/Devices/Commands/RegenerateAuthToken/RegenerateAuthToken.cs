@@ -2,12 +2,12 @@ using Domain.Entities;
 
 namespace Application.Devices.Commands.RegenerateAuthToken;
 
-public record RegenerateAuthTokenCommand : IRequest<long>
+public record RegenerateAuthTokenCommand : IRequest<(long, string)>
 {
     public long DeviceId { get; init; }
 }
 
-public class RegenerateAuthTokenCommandHandler : IRequestHandler<RegenerateAuthTokenCommand, long>
+public class RegenerateAuthTokenCommandHandler : IRequestHandler<RegenerateAuthTokenCommand, (long, string)>
 {
     private readonly IApplicationDbContext _context;
     private readonly ISecurityUtils _securityUtils;
@@ -20,7 +20,7 @@ public class RegenerateAuthTokenCommandHandler : IRequestHandler<RegenerateAuthT
         _securityUtils = securityUtils;
     }
 
-    public async Task<long> Handle(RegenerateAuthTokenCommand request, CancellationToken cancellationToken)
+    public async Task<(long, string)> Handle(RegenerateAuthTokenCommand request, CancellationToken cancellationToken)
     {
         var entity = await _context.Devices.FindAsync(request.DeviceId, cancellationToken);
 
@@ -33,11 +33,13 @@ public class RegenerateAuthTokenCommandHandler : IRequestHandler<RegenerateAuthT
         {
             throw new ForbiddenAccessException();
         }
+        
+        var token = _securityUtils.GenerateRandomApiKey();
 
-        entity.AuthTokenHash = _securityUtils.HashPassword(_securityUtils.GenerateRandomApiKey());
+        entity.AuthTokenHash = _securityUtils.HashPassword(token);
 
         await _context.SaveChangesAsync(cancellationToken);
 
-        return entity.Id;
+        return (entity.Id, token);
     }
 }

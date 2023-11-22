@@ -4,7 +4,7 @@ public class CreateEnvironmentInfoDto
 {
     public int Humidity { get; set; }
 
-    public int Temperature { get; set; }
+    public double Temperature { get; set; }
 
     public int LightLevel { get; set; }
 

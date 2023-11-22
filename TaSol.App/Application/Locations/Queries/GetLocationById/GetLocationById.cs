@@ -1,6 +1,6 @@
 using Domain.Entities;
 
-namespace Application.Queries.Queries.GetLocationById;
+namespace Application.Locations.Queries.GetLocationById;
 
 public record GetLocationByIdQuery : IRequest<GetLocationByIdDto>
 {

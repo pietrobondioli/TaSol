@@ -1,9 +1,11 @@
 using Domain.Entities;
 
-namespace Application.Queries.Queries.GetLocationById;
+namespace Application.Locations.Queries.GetLocationById;
 
 public class GetLocationByIdDto
 {
+    public long Id { get; set; }
+
     public string Name { get; set; }
 
     public string Description { get; set; }
