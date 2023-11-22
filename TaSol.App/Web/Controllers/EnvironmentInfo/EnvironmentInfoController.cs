@@ -1,5 +1,4 @@
 using Application.EnvironmentInfos.Commands.CreateEnvironmentInfo;
-using Application.EnvironmentInfos.Constants;
 using Application.EnvironmentInfos.Queries.GetEnvironmentInfo;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

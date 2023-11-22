@@ -33,7 +33,7 @@ public class RegenerateAuthTokenCommandHandler : IRequestHandler<RegenerateAuthT
         {
             throw new ForbiddenAccessException();
         }
-        
+
         var token = _securityUtils.GenerateRandomApiKey();
 
         entity.AuthTokenHash = _securityUtils.HashPassword(token);

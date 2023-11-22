@@ -50,7 +50,7 @@ public class CreateEnvironmentInfoCommandHandler : IRequestHandler<CreateEnviron
             Temperature = request.Temperature,
             Humidity = request.Humidity,
             LightLevel = request.LightLevel,
-            RainLevel = request.RainLevel,
+            RainLevel = request.RainLevel
         };
 
         _context.EnvironmentInfos.Add(entity);

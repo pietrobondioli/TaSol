@@ -33,9 +33,12 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, l
     {
         var existingUser = await _context.Users.FirstOrDefaultAsync(
             x => x.UserName == request.UserName || x.Email == request.Email, cancellationToken);
-        
-        if (existingUser != null) throw new ConflictException("User already exists");
-        
+
+        if (existingUser != null)
+        {
+            throw new ConflictException("User already exists");
+        }
+
         var entity = new User
         {
             UserName = request.UserName,

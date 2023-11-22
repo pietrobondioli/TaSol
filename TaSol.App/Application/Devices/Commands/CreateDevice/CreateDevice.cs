@@ -30,7 +30,7 @@ public class CreateDeviceCommandHandler : IRequestHandler<CreateDeviceCommand, (
     public async Task<(long, string)> Handle(CreateDeviceCommand request, CancellationToken cancellationToken)
     {
         var token = _securityUtils.GenerateRandomApiKey();
-        
+
         var entity = new Device
         {
             Name = request.Name,
