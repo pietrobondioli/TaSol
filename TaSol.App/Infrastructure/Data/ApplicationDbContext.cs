@@ -33,8 +33,84 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     {
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
-        base.OnModelCreating(builder);
+        ConfigureRelationships(builder);
+        ConfigureSoftDeleteFilter(builder);
 
+        base.OnModelCreating(builder);
+    }
+
+    private void ConfigureRelationships(ModelBuilder builder)
+    {
+        builder.Entity<User>()
+            .HasOne(x => x.Metadata)
+            .WithOne(x => x.User)
+            .HasForeignKey<UserMetadata>(x => x.UserId);
+
+        builder.Entity<User>()
+            .HasMany(x => x.PasswordResetTokens)
+            .WithOne(x => x.User)
+            .HasForeignKey(x => x.UserId);
+
+        builder.Entity<User>()
+            .HasMany(x => x.EmailResetTokens)
+            .WithOne(x => x.User)
+            .HasForeignKey(x => x.UserId);
+
+        builder.Entity<User>()
+            .HasMany(x => x.EmailVerificationTokens)
+            .WithOne(x => x.User)
+            .HasForeignKey(x => x.UserId);
+
+        builder.Entity<User>()
+            .HasMany(x => x.Devices)
+            .WithOne(x => x.Owner)
+            .HasForeignKey(x => x.OwnerId);
+
+        builder.Entity<Device>()
+            .HasMany(x => x.EnvironmentInfos)
+            .WithOne(x => x.Device)
+            .HasForeignKey(x => x.DeviceId);
+
+        builder.Entity<Device>()
+            .HasOne(x => x.Location)
+            .WithMany(x => x.Devices)
+            .HasForeignKey(x => x.LocationId);
+
+        builder.Entity<Location>()
+            .HasMany(x => x.Devices)
+            .WithOne(x => x.Location)
+            .HasForeignKey(x => x.LocationId);
+
+        builder.Entity<Location>()
+            .HasMany(x => x.EnvironmentInfos)
+            .WithOne(x => x.Location)
+            .HasForeignKey(x => x.LocationId);
+
+        foreach (var auditableEntity in builder.Model.GetEntityTypes()
+                     .Where(e => typeof(BaseAuditableEntity).IsAssignableFrom(e.ClrType) ||
+                                 typeof(BaseOwnedAuditableEntity).IsAssignableFrom(e.ClrType) ||
+                                 typeof(BaseUniqueConsumableToken).IsAssignableFrom(e.ClrType))
+                     .Select(e => e.ClrType))
+        {
+            builder.Entity(auditableEntity)
+                .HasOne(typeof(User), nameof(BaseAuditableEntity.CreatedByUser))
+                .WithMany()
+                .HasForeignKey(nameof(BaseAuditableEntity.CreatedBy));
+
+            builder.Entity(auditableEntity)
+                .HasOne(typeof(User), nameof(BaseAuditableEntity.LastModifiedByUser))
+                .WithMany()
+                .HasForeignKey(nameof(BaseAuditableEntity.LastModifiedBy));
+
+            builder.Entity(auditableEntity)
+                .HasOne(typeof(User), nameof(BaseAuditableEntity.DeletedByUser))
+                .WithMany()
+                .HasForeignKey(nameof(BaseAuditableEntity.DeletedBy));
+        }
+    }
+
+    private void ConfigureSoftDeleteFilter(ModelBuilder builder)
+    {
         foreach (var ClrType in builder.Model.GetEntityTypes()
                      .Where(e => typeof(BaseAuditableEntity).IsAssignableFrom(e.ClrType)).Select(e => e.ClrType))
         {

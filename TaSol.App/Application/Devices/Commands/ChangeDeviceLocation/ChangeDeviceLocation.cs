@@ -36,16 +36,6 @@ public class ChangeDeviceLocationCommandHandler : IRequestHandler<ChangeDeviceLo
 
         var location = await _context.Locations.FindAsync(request.NewLocationId, cancellationToken);
 
-        if (location == null)
-        {
-            throw new NotFoundException(nameof(Location), request.NewLocationId);
-        }
-
-        if (location.OwnerId != _user.Id)
-        {
-            throw new ForbiddenAccessException();
-        }
-
         device.LocationId = location.Id;
         await _context.SaveChangesAsync(cancellationToken);
 

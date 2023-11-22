@@ -5,14 +5,21 @@ namespace Domain.Entities;
 
 public class UserEmailVerificationToken : BaseUniqueConsumableToken
 {
-    public UserEmailVerificationToken(User user, int expirationInMinutes = 3600)
+    [Required]
+    public long UserId { get; set; }
+
+    [ForeignKey(nameof(UserId))]
+    public virtual User User { get; set; } = null!;
+
+    public static UserEmailVerificationToken Generate(User user, int expirationInMinutes = 3600)
     {
-        UserId = user.Id;
-        Token = Guid.NewGuid().ToString();
-        ExpiresAt = DateTimeOffset.UtcNow.AddMinutes(expirationInMinutes);
+        var token = new UserEmailVerificationToken
+        {
+            UserId = user.Id,
+            Token = Guid.NewGuid().ToString(),
+            ExpiresAt = DateTimeOffset.UtcNow.AddMinutes(expirationInMinutes)
+        };
+
+        return token;
     }
-
-    [Required] public long UserId { get; set; }
-
-    [ForeignKey(nameof(UserId))] public virtual User User { get; set; } = null!;
 }

@@ -5,14 +5,21 @@ namespace Domain.Entities;
 
 public class UserPasswordResetToken : BaseUniqueConsumableToken
 {
-    public UserPasswordResetToken(User user, int expirationInMinutes = 30)
+    [Required]
+    public long UserId { get; set; }
+
+    [ForeignKey(nameof(UserId))]
+    public virtual User User { get; set; } = null!;
+
+    public static UserPasswordResetToken Generate(User user, int expirationInMinutes = 30)
     {
-        UserId = user.Id;
-        Token = Guid.NewGuid().ToString();
-        ExpiresAt = DateTimeOffset.UtcNow.AddMinutes(expirationInMinutes);
+        var token = new UserPasswordResetToken
+        {
+            UserId = user.Id,
+            Token = Guid.NewGuid().ToString(),
+            ExpiresAt = DateTimeOffset.UtcNow.AddMinutes(expirationInMinutes)
+        };
+
+        return token;
     }
-
-    [Required] public long UserId { get; set; }
-
-    [ForeignKey(nameof(UserId))] public virtual User User { get; set; } = null!;
 }

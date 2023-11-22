@@ -5,14 +5,21 @@ namespace Domain.Entities;
 
 public class UserEmailResetToken : BaseUniqueConsumableToken
 {
-    public UserEmailResetToken(User user, int expirationInMinutes = 30)
+    [Required]
+    public long UserId { get; set; }
+
+    [ForeignKey(nameof(UserId))]
+    public virtual User User { get; set; } = null!;
+
+    public static UserEmailResetToken Generate(User user, int expirationInMinutes = 30)
     {
-        UserId = user.Id;
-        Token = Guid.NewGuid().ToString();
-        ExpiresAt = DateTimeOffset.UtcNow.AddMinutes(expirationInMinutes);
+        var token = new UserEmailResetToken
+        {
+            UserId = user.Id,
+            Token = Guid.NewGuid().ToString(),
+            ExpiresAt = DateTimeOffset.UtcNow.AddMinutes(expirationInMinutes)
+        };
+
+        return token;
     }
-
-    [Required] public long UserId { get; set; }
-
-    [ForeignKey(nameof(UserId))] public virtual User User { get; set; } = null!;
 }
