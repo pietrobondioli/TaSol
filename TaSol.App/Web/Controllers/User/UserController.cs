@@ -26,12 +26,12 @@ public class UserController : ControllerBase
     private readonly ISender _sender;
 
     public UserController(ILogger<UserController> logger, ISender sender, IJwtService jwtService,
-        HttpContext httpContext)
+        IHttpContextAccessor httpContextAccessor)
     {
         _logger = logger;
         _sender = sender;
         _jwtService = jwtService;
-        _httpContext = httpContext;
+        _httpContext = httpContextAccessor.HttpContext!;
     }
 
     [HttpPost("register")]
