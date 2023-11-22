@@ -1,4 +1,4 @@
-namespace Application.Queries.Queries.GetLocationsWithPagination;
+namespace Application.Locations.Queries.GetLocationsWithPagination;
 
 public record GetLocationsWithPaginationQuery : IRequest<GetLocationsWithPaginationDto>
 {
@@ -27,15 +27,13 @@ public class
     {
         var query = _context.Locations.AsQueryable();
 
-        query = query.Where(x => EF.Functions.FreeText(x.Name, request.SearchTerm) ||
-                                 EF.Functions.FreeText(x.Description, request.SearchTerm) ||
-                                 EF.Functions.FreeText(x.Address, request.SearchTerm) ||
-                                 EF.Functions.FreeText(x.City, request.SearchTerm) ||
-                                 EF.Functions.FreeText(x.State, request.SearchTerm) ||
-                                 EF.Functions.FreeText(x.Country, request.SearchTerm) ||
-                                 EF.Functions.FreeText(x.Latitude, request.SearchTerm) ||
-                                 EF.Functions.FreeText(x.Longitude, request.SearchTerm));
-
+        query = query.Where(x => EF.Functions.Contains(x.Name, $"\"{request.SearchTerm}*\"") ||
+                                 EF.Functions.Contains(x.Description, $"\"{request.SearchTerm}*\"") ||
+                                 EF.Functions.Contains(x.Address, $"\"{request.SearchTerm}*\"") ||
+                                 EF.Functions.Contains(x.City, $"\"{request.SearchTerm}*\"") ||
+                                 EF.Functions.Contains(x.State, $"\"{request.SearchTerm}*\"") ||
+                                 EF.Functions.Contains(x.Country, $"\"{request.SearchTerm}*\""));
+        
         var totalItems = await query.CountAsync(cancellationToken);
 
         var locations = await query

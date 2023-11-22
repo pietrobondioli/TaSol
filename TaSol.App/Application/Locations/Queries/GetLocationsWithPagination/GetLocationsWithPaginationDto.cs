@@ -1,10 +1,20 @@
 using Application.Common.Models;
 using Domain.Entities;
 
-namespace Application.Queries.Queries.GetLocationsWithPagination;
+namespace Application.Locations.Queries.GetLocationsWithPagination;
+
+public class GetLocationsWithPaginationDto : PaginatedList<LocationDto>
+{
+    public GetLocationsWithPaginationDto(IReadOnlyCollection<LocationDto> items, int count, int pageNumber,
+        int pageSize) : base(items, count, pageNumber, pageSize)
+    {
+    }
+}
 
 public class LocationDto
 {
+    public long Id { get; set; }
+
     public string Name { get; set; }
 
     public string Description { get; set; }
@@ -27,13 +37,5 @@ public class LocationDto
         {
             CreateMap<Location, LocationDto>();
         }
-    }
-}
-
-public class GetLocationsWithPaginationDto : PaginatedList<LocationDto>
-{
-    public GetLocationsWithPaginationDto(IReadOnlyCollection<LocationDto> items, int count, int pageNumber,
-        int pageSize) : base(items, count, pageNumber, pageSize)
-    {
     }
 }

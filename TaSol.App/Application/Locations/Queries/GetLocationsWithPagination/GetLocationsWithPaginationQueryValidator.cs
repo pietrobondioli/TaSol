@@ -1,4 +1,4 @@
-namespace Application.Queries.Queries.GetLocationsWithPagination;
+namespace Application.Locations.Queries.GetLocationsWithPagination;
 
 public class GetLocationsWithPaginationQueryValidator : AbstractValidator<GetLocationsWithPaginationQuery>
 {

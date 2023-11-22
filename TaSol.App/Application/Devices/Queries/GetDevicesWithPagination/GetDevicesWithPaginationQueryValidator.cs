@@ -1,4 +1,4 @@
-namespace Application.Queries.Queries.GetDevicesWithPagination;
+namespace Application.Devices.Queries.GetDevicesWithPagination;
 
 public class GetDevicesWithPaginationQueryValidator : AbstractValidator<GetDevicesWithPaginationQuery>
 {

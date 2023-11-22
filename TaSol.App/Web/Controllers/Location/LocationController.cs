@@ -1,6 +1,6 @@
 using Application.Locations.Commands.CreateLocation;
-using Application.Queries.Queries.GetLocationById;
-using Application.Queries.Queries.GetLocationsWithPagination;
+using Application.Locations.Queries.GetLocationById;
+using Application.Locations.Queries.GetLocationsWithPagination;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

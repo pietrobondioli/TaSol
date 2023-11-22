@@ -1,7 +1,10 @@
 using System.Text;
+using System.Text.Json;
 using Application.Common.Interfaces;
 using Infrastructure.Data;
 using Infrastructure.Utils;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Shared.Constants;
@@ -106,7 +109,7 @@ public static class DependencyInjection
             });
 
             c.UseInlineDefinitionsForEnums();
-            c.SchemaFilter<EnumSchemaFilter>();
+            // c.SchemaFilter<EnumSchemaFilter>();
         });
 
         services.AddRouting(o =>
@@ -157,6 +160,24 @@ public static class DependencyInjection
                     RequireExpirationTime = true,
                     ValidateLifetime = true,
                     ClockSkew = TimeSpan.Zero
+                };
+                options.Events = new JwtBearerEvents
+                {
+                    OnAuthenticationFailed = context =>
+                    {
+                        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                        context.Response.ContentType = "application/json";
+
+                        var result = JsonSerializer.Serialize(new ProblemDetails
+                        {
+                            Status = StatusCodes.Status401Unauthorized,
+                            Title = "Unauthorized",
+                            Detail = context.Exception?.Message,
+                            Type = "https://tools.ietf.org/html/rfc7235#section-3.1"
+                        });
+
+                        return context.Response.WriteAsync(result);
+                    }
                 };
             });
     }

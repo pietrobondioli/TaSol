@@ -1,4 +1,4 @@
-namespace Application.Queries.Queries.GetDeviceById;
+namespace Application.Devices.Queries.GetDeviceById;
 
 public class GetDeviceByIdQueryValidator : AbstractValidator<GetDeviceByIdQuery>
 {

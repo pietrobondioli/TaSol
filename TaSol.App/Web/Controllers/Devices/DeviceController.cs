@@ -4,8 +4,8 @@ using Application.Devices.Commands.DisableDevice;
 using Application.Devices.Commands.EnableDevice;
 using Application.Devices.Commands.RegenerateAuthToken;
 using Application.Devices.Commands.UpdateDevice;
-using Application.Queries.Queries.GetDeviceById;
-using Application.Queries.Queries.GetDevicesWithPagination;
+using Application.Devices.Queries.GetDeviceById;
+using Application.Devices.Queries.GetDevicesWithPagination;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -30,7 +30,7 @@ public class DeviceController : ControllerBase
     [HttpGet]
     [AllowAnonymous]
     public async Task<IActionResult> GetPaginatedAsync([FromQuery] int pageNumber, [FromQuery] int pageSize,
-        [FromQuery] string deviceName)
+        [FromQuery] string? deviceName)
     {
         var query = new GetDevicesWithPaginationQuery
         {
@@ -56,11 +56,14 @@ public class DeviceController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateAsync([FromBody] CreateDeviceDto body)
     {
-        var command = new CreateDeviceCommand { Name = body.Name, LocationId = body.LocationId };
+        var command = new CreateDeviceCommand
+        {
+            Name = body.Name, Description = body.Description ?? string.Empty, LocationId = body.LocationId
+        };
 
-        var result = await _sender.Send(command);
+        var (resulid, token) = await _sender.Send(command);
 
-        return Ok(result);
+        return Ok(new { Id = resulid, Token = token });
     }
 
     [HttpPost("{id}/change-location")]
@@ -96,7 +99,8 @@ public class DeviceController : ControllerBase
     [HttpPost("{id}/update")]
     public async Task<IActionResult> UpdateAsync([FromRoute] string id, [FromBody] UpdateDeviceDto body)
     {
-        var command = new UpdateDeviceCommand { DeviceId = id, Name = body.Name, Description = body.Description };
+        var command =
+            new UpdateDeviceCommand { DeviceId = long.Parse(id), Name = body.Name, Description = body.Description };
 
         var result = await _sender.Send(command);
 
@@ -108,8 +112,8 @@ public class DeviceController : ControllerBase
     {
         var command = new RegenerateAuthTokenCommand { DeviceId = long.Parse(id) };
 
-        var result = await _sender.Send(command);
+        var (_, token) = await _sender.Send(command);
 
-        return Ok(result);
+        return Ok(new { Id = id, Token = token });
     }
 }

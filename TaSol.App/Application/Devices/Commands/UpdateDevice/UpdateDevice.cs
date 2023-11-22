@@ -4,7 +4,7 @@ namespace Application.Devices.Commands.UpdateDevice;
 
 public record UpdateDeviceCommand : IRequest<long>
 {
-    public string DeviceId { get; init; } = null!;
+    public long DeviceId { get; init; }
 
     public string Name { get; init; }
 

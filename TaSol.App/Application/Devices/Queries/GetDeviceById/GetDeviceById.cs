@@ -1,6 +1,6 @@
 using Domain.Entities;
 
-namespace Application.Queries.Queries.GetDeviceById;
+namespace Application.Devices.Queries.GetDeviceById;
 
 public record GetDeviceByIdQuery : IRequest<GetDeviceByIdDto>
 {

@@ -31,10 +31,12 @@ public class CreateEnvironmentInfoCommandHandler : IRequestHandler<CreateEnviron
     {
         var authTokenHash = _securityUtils.HashPassword(request.AuthToken);
 
-        var device = await _context.Devices
+        var devices = await _context.Devices
             .Include(d => d.Owner)
-            .FirstOrDefaultAsync(d => _securityUtils.VerifyPassword(request.AuthToken, d.AuthTokenHash),
-                cancellationToken);
+            .Where(d => !d.IsDeleted)
+            .ToListAsync(cancellationToken);
+
+        var device = devices.FirstOrDefault(d => _securityUtils.VerifyPassword(request.AuthToken, d.AuthTokenHash));
 
         if (device == null)
         {
@@ -48,7 +50,7 @@ public class CreateEnvironmentInfoCommandHandler : IRequestHandler<CreateEnviron
             Temperature = request.Temperature,
             Humidity = request.Humidity,
             LightLevel = request.LightLevel,
-            RainLevel = request.RainLevel
+            RainLevel = request.RainLevel,
         };
 
         _context.EnvironmentInfos.Add(entity);

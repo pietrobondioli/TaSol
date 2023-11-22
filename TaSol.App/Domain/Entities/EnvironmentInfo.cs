@@ -18,7 +18,7 @@ public class EnvironmentInfo : BaseEntity
     public int RainLevel { get; set; }
 
     [Required]
-    public DateTimeOffset TimeStamp { get; set; }
+    public DateTimeOffset TimeStamp { get; set; } = DateTimeOffset.UtcNow;
 
     [Required]
     public long DeviceId { get; set; }
