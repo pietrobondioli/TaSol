@@ -33,7 +33,7 @@ public class ReqUserEmailChangeCommandHandler : IRequestHandler<ReqUserEmailChan
 
         await InvalidateExistingTokens(request.Email, cancellationToken);
 
-        var entity = new UserEmailResetToken(userWithEmail);
+        var entity = UserEmailResetToken.Generate(userWithEmail);
 
         entity.AddDomainEvent(new UserRequestedEmailChangeEvent(userWithEmail, entity));
 

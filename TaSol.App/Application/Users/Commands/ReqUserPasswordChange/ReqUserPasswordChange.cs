@@ -28,7 +28,7 @@ public class ReqUserPasswordChangeCommandHandler : IRequestHandler<ReqUserPasswo
 
         await InvalidateExistingTokens(request.Email, cancellationToken);
 
-        var entity = new UserPasswordResetToken(userWithEmail);
+        var entity = UserPasswordResetToken.Generate(userWithEmail);
 
         entity.AddDomainEvent(new UserRequestedPasswordChangeEvent(userWithEmail, entity));
 

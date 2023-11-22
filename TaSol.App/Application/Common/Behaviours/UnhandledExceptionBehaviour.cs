@@ -23,7 +23,7 @@ public class UnhandledExceptionBehaviour<TRequest, TResponse> : IPipelineBehavio
         {
             var requestName = typeof(TRequest).Name;
 
-            _logger.LogError(ex, "CleanArchitecture Request: Unhandled Exception for Request {Name} {@Request}",
+            _logger.LogError(ex, "Request: Unhandled Exception for Request {Name} {@Request}",
                 requestName, request);
 
             throw;

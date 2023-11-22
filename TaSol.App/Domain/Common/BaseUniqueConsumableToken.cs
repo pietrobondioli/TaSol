@@ -2,11 +2,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Common;
 
-public abstract class BaseUniqueConsumableToken : BaseAuditableEntity
+public abstract class BaseUniqueConsumableToken : BaseOwnedAuditableEntity
 {
-    [Required] public string Token { get; set; }
+    [Required]
+    public string Token { get; set; }
 
-    [Required] public DateTimeOffset ExpiresAt { get; set; }
+    [Required]
+    public DateTimeOffset ExpiresAt { get; set; }
 
     public DateTimeOffset? ConsumedAt { get; set; }
 

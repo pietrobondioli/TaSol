@@ -33,7 +33,7 @@ public class ReqNewUserVerificationTokenCommandHandler : IRequestHandler<ReqNewU
 
         await InvalidateExistingTokens(request.Email, cancellationToken);
 
-        var entity = new UserEmailVerificationToken(userWithEmail);
+        var entity = UserEmailVerificationToken.Generate(userWithEmail);
 
         entity.AddDomainEvent(new UserRequestedNewVerificationTokenEvent(userWithEmail, entity));
 
