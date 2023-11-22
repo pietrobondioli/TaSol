@@ -13,7 +13,8 @@ services:
     restart: unless-stopped
 
   sqlserver:
-    image: mcr.microsoft.com/mssql/server:2019-latest
+    build:
+      dockerfile: .infra/sqlserver-fts.Dockerfile
     environment:
       SA_PASSWORD: "Abc@123456"
       ACCEPT_EULA: "Y"
