@@ -11,7 +11,6 @@ using Shared.Constants;
 using Shared.Settings;
 using Web.Common.Interfaces;
 using Web.Common.Services;
-using Web.Configuration.Filters;
 
 namespace Web;
 
@@ -96,7 +95,7 @@ public static class DependencyInjection
                     new List<string>()
                 }
             });
-            
+
             c.AddSecurityRequirement(new OpenApiSecurityRequirement
             {
                 {

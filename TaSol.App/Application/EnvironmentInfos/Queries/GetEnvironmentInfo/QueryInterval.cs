@@ -1,4 +1,4 @@
-namespace Application.EnvironmentInfos.Constants;
+namespace Application.EnvironmentInfos.Queries.GetEnvironmentInfo;
 
 public class QueryInterval
 {

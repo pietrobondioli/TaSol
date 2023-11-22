@@ -33,7 +33,7 @@ public class
                                  EF.Functions.Contains(x.City, $"\"{request.SearchTerm}*\"") ||
                                  EF.Functions.Contains(x.State, $"\"{request.SearchTerm}*\"") ||
                                  EF.Functions.Contains(x.Country, $"\"{request.SearchTerm}*\""));
-        
+
         var totalItems = await query.CountAsync(cancellationToken);
 
         var locations = await query

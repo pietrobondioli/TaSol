@@ -41,8 +41,8 @@ public class ChangeUserEmailCommandHandler : IRequestHandler<ChangeUserEmailComm
             throw new NotFoundException(nameof(User), token.UserId);
         }
 
+        user.AddDomainEvent(new UserChangedEmailEvent(user, user.Email));
         user.Email = request.NewEmail;
-        user.AddDomainEvent(new UserChangedEmailEvent(user));
 
         token.Consume();
 

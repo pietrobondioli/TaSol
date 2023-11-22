@@ -12,7 +12,7 @@ public abstract class BaseUniqueConsumableToken : BaseOwnedAuditableEntity
 
     public DateTimeOffset? ConsumedAt { get; set; }
 
-    public string? ConsumerIpAddress { get; set; } = null!;
+    public string? ConsumerIpAddress { get; set; }
 
     public DateTimeOffset? RevokedAt { get; set; }
 

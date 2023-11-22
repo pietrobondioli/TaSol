@@ -21,7 +21,7 @@ public class CurrentUser : IUser
     public long? Id => _httpContextAccessor.HttpContext?.User?.FindFirstValue(UserClaims.Id) is { } id
         ? Convert.ToInt64(id)
         : null;
-    
+
     public static List<Claim> GenerateClaims(string id, string email, string userName, string role)
     {
         var claims = new List<Claim>
