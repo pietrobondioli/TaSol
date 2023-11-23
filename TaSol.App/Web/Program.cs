@@ -1,6 +1,7 @@
 using Application;
 using Application.Common.Interfaces;
 using Infrastructure;
+using Infrastructure.Background;
 using Serilog;
 using Shared.Settings;
 using Web;
@@ -20,6 +21,8 @@ builder.Services.AddConfiguration(configuration);
 builder.Services.AddInfrastructureServices(configuration, env);
 builder.Services.AddApplicationServices();
 builder.Services.AddWebServices(configuration);
+
+builder.Services.AddHostedService<MqttHostedService>();
 
 // Build the application
 var app = builder.Build();
@@ -53,10 +56,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
-var mqttService = app.Services.GetRequiredService<IMqttService>();
-await mqttService.ConnectAsync();
-await mqttService.SubscribeAsync(configuration.GetSettings<MqttSettings>().Topic);
 
 app.Run();
 

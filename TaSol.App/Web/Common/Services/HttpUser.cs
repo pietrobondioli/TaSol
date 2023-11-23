@@ -3,24 +3,24 @@ using Application.Common.Interfaces;
 
 namespace Web.Common.Services;
 
-public class CurrentUser : IUser
+public class HttpUser : IUser
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public CurrentUser(IHttpContextAccessor httpContextAccessor)
+    public HttpUser(IHttpContextAccessor httpContextAccessor)
     {
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public string? Email => _httpContextAccessor.HttpContext?.User?.FindFirstValue(UserClaims.Email);
-
-    public string? UserName => _httpContextAccessor.HttpContext?.User?.FindFirstValue(UserClaims.UserName);
-
-    public string? Role => _httpContextAccessor.HttpContext?.User?.FindFirstValue(UserClaims.Role);
-
-    public long? Id => _httpContextAccessor.HttpContext?.User?.FindFirstValue(UserClaims.Id) is { } id
+    public long? Id => _httpContextAccessor.HttpContext?.User.FindFirstValue(UserClaims.Id) is { } id
         ? Convert.ToInt64(id)
         : null;
+
+    public string? Email => _httpContextAccessor.HttpContext?.User.FindFirstValue(UserClaims.Email);
+
+    public string? UserName => _httpContextAccessor.HttpContext?.User.FindFirstValue(UserClaims.UserName);
+
+    public string? Role => _httpContextAccessor.HttpContext?.User.FindFirstValue(UserClaims.Role);
 
     public static List<Claim> GenerateClaims(string id, string email, string userName, string role)
     {

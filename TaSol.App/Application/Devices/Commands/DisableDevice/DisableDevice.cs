@@ -12,10 +12,10 @@ public class DisableDeviceCommandHandler : IRequestHandler<DisableDeviceCommand,
     private readonly IApplicationDbContext _context;
     private readonly IUser _user;
 
-    public DisableDeviceCommandHandler(IUser user, IApplicationDbContext context)
+    public DisableDeviceCommandHandler(IApplicationDbContext context, IUserFactory userFactory)
     {
-        _user = user;
         _context = context;
+        _user = userFactory.CreateUser();
     }
 
     public async Task<long> Handle(DisableDeviceCommand request, CancellationToken cancellationToken)

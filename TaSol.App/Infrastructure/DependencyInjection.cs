@@ -1,4 +1,5 @@
 using Application.Common.Interfaces;
+using Application.Common.Services;
 using Infrastructure.Data;
 using Infrastructure.Data.Interceptors;
 using Infrastructure.Logging;
@@ -24,10 +25,6 @@ public static class DependencyInjection
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services,
         IConfiguration configuration, IWebHostEnvironment env)
     {
-        services.AddSingleton<IMqttService, MqttService>();
-        
-        services.AddScoped<IMailService, AwsMailService>();
-
         ConfigureDatabase(services, configuration, env);
 
         ConfigureSerilog(services, configuration, env);

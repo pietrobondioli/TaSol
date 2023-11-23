@@ -10,9 +10,9 @@ public class AuditableEntityInterceptor : SaveChangesInterceptor
 {
     private readonly IUser _user;
 
-    public AuditableEntityInterceptor(IUser user)
+    public AuditableEntityInterceptor(IUserFactory userFactory)
     {
-        _user = user;
+        _user = userFactory.CreateUser();
     }
 
     public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)

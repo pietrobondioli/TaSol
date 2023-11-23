@@ -1,38 +1,33 @@
 using System.Text.Json;
 using Application.EnvironmentInfos.Commands.CreateEnvironmentInfo;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Application.Messages.Handlers;
 
 public class MqttMessageHandler : IMqttMessageHandler
 {
-    private readonly ISender _sender;
+    private readonly IServiceProvider _serviceProvider;
 
-    public MqttMessageHandler(ISender sender)
+    public MqttMessageHandler(IServiceProvider serviceProvider)
     {
-        _sender = sender;
+        _serviceProvider = serviceProvider;
     }
 
     public async Task HandleMessageAsync(string topic, string payload)
     {
-        try
-        {
-            var parsedPayload = JsonSerializer.Deserialize<CreateEnvironmentInfoCommand>(payload);
+        using var scope = _serviceProvider.CreateScope();
+        var sender = scope.ServiceProvider.GetRequiredService<ISender>();
+        var parsedPayload = JsonSerializer.Deserialize<CreateEnvironmentInfoCommand>(payload);
 
-            var command = new CreateEnvironmentInfoCommand
-            {
-                AuthToken = parsedPayload.AuthToken,
-                Humidity = parsedPayload.Humidity,
-                LightLevel = parsedPayload.LightLevel,
-                RainLevel = parsedPayload.RainLevel,
-                Temperature = parsedPayload.Temperature
-            };
-
-            var res = await _sender.Send(command);
-        }
-        catch (Exception e)
+        var command = new CreateEnvironmentInfoCommand
         {
-            Console.WriteLine(e);
-            throw;
-        }
+            AuthToken = parsedPayload.AuthToken,
+            Humidity = parsedPayload.Humidity,
+            LightLevel = parsedPayload.LightLevel,
+            RainLevel = parsedPayload.RainLevel,
+            Temperature = parsedPayload.Temperature
+        };
+
+        var res = await sender.Send(command);
     }
 }

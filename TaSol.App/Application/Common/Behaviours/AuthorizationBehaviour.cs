@@ -10,11 +10,11 @@ public class AuthorizationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRe
     private readonly IUser _user;
 
     public AuthorizationBehaviour(
-        IUser user,
-        IApplicationDbContext context)
+        IApplicationDbContext context,
+        IUserFactory userFactory)
     {
-        _user = user;
         _context = context;
+        _user = userFactory.CreateUser();
     }
 
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next,

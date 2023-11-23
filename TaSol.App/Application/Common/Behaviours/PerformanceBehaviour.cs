@@ -12,13 +12,13 @@ public class PerformanceBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequ
 
     public PerformanceBehaviour(
         ILogger<TRequest> logger,
-        IUser user,
-        IApplicationDbContext context)
+        IApplicationDbContext context,
+        IUserFactory userFactory)
     {
         _timer = new Stopwatch();
         _logger = logger;
-        _user = user;
         _context = context;
+        _user = userFactory.CreateUser();
     }
 
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next,

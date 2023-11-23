@@ -9,11 +9,11 @@ public class LoggingBehaviour<TRequest> : IRequestPreProcessor<TRequest> where T
     private readonly ILogger _logger;
     private readonly IUser _user;
 
-    public LoggingBehaviour(ILogger<TRequest> logger, IUser user, IApplicationDbContext context)
+    public LoggingBehaviour(ILogger<TRequest> logger, IApplicationDbContext context, IUserFactory userFactory)
     {
         _logger = logger;
-        _user = user;
         _context = context;
+        _user = userFactory.CreateUser();
     }
 
     public async Task Process(TRequest request, CancellationToken cancellationToken)

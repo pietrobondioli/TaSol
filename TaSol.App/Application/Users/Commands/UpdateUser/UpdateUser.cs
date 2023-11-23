@@ -19,10 +19,10 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, long>
 
     private readonly IUser _user;
 
-    public UpdateUserCommandHandler(IApplicationDbContext context, IUser user)
+    public UpdateUserCommandHandler(IApplicationDbContext context, IUserFactory userFactory)
     {
         _context = context;
-        _user = user;
+        _user = userFactory.CreateUser();
     }
 
     public async Task<long> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
