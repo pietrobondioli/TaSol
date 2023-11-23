@@ -1,5 +1,6 @@
 using System.Text;
 using Application.Common.Interfaces;
+using Microsoft.Extensions.Options;
 using MQTTnet;
 using MQTTnet.Client;
 using Shared.Settings;
@@ -11,11 +12,11 @@ public class MqttService : IMqttService
     private readonly IMqttClient _mqttClient;
     private readonly MqttSettings _mqttSettings;
 
-    public MqttService(MqttSettings mqttSettings, IMqttMessageHandler mqttMessageHandler)
+    public MqttService(IOptions<MqttSettings> mqttSettings, IMqttMessageHandler mqttMessageHandler)
     {
         var factory = new MqttFactory();
         _mqttClient = factory.CreateMqttClient();
-        _mqttSettings = mqttSettings;
+        _mqttSettings = mqttSettings.Value;
         
         _mqttClient.ApplicationMessageReceivedAsync += async (e) =>
         {
