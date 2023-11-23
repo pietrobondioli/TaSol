@@ -1,6 +1,8 @@
 using Application;
+using Application.Common.Interfaces;
 using Infrastructure;
 using Serilog;
+using Shared.Settings;
 using Web;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -59,6 +61,10 @@ app.MapControllers();
 #if (UseApiOnly)
 app.Map("/", () => Results.Redirect("/api"));
 #endif
+
+var mqttService = app.Services.GetRequiredService<IMqttService>();
+await mqttService.ConnectAsync();
+await mqttService.SubscribeAsync(configuration.GetMqttSettings().Topic);
 
 app.Run();
 

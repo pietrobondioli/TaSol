@@ -26,6 +26,12 @@ public static class DependencyInjection
 
         var jwtSettings = configuration.GetSection(SettingsSections.JwtSettings);
         services.Configure<JwtSettings>(jwtSettings);
+        
+        var appSettings = configuration.GetSection(SettingsSections.AppSettings);
+        services.Configure<AppSettings>(appSettings);
+        
+        var mqttSettings = configuration.GetSection(SettingsSections.MqttSettings);
+        services.Configure<MqttSettings>(mqttSettings);
 
         return services;
     }

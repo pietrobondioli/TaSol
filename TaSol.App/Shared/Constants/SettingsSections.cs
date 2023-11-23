@@ -7,4 +7,8 @@ public static class SettingsSections
     public const string ConnectionStrings = "ConnectionStrings";
 
     public const string ApiSettings = "ApiSettings";
+    
+    public const string AppSettings = "AppSettings";
+    
+    public const string MqttSettings = "MqttSettings";
 }
