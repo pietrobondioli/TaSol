@@ -38,7 +38,7 @@ public static class DependencyInjection
     private static void ConfigureDatabase(IServiceCollection services, IConfiguration configuration,
         IWebHostEnvironment env)
     {
-        var connectionStrings = configuration.GetSection(SettingsSections.ConnectionStrings).Get<ConnectionStrings>();
+        var connectionStrings = configuration.GetSettings<ConnectionStrings>();
 
         services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
         services.AddScoped<ISaveChangesInterceptor, DispatchDomainEventsInterceptor>();

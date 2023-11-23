@@ -17,10 +17,12 @@ public class MqttService : IMqttService
         var factory = new MqttFactory();
         _mqttClient = factory.CreateMqttClient();
         _mqttSettings = mqttSettings.Value;
-        
+
         _mqttClient.ApplicationMessageReceivedAsync += async (e) =>
         {
-            await mqttMessageHandler.HandleMessageAsync(e.ApplicationMessage.Topic, string.Empty);
+            var payload = Encoding.UTF8.GetString(e.ApplicationMessage.Payload);
+
+            await mqttMessageHandler.HandleMessageAsync(e.ApplicationMessage.Topic, payload);
         };
     }
 

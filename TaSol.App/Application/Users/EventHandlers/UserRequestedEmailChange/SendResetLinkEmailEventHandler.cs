@@ -7,16 +7,16 @@ namespace Application.Users.EventHandlers.UserRequestedEmailChange;
 
 public class SendResetLinkEmailEventHandler : INotificationHandler<UserRequestedEmailChangeEvent>
 {
-    private readonly IOptions<AppSettings> _appSettings;
+    private readonly AppSettings _appSettings;
     private readonly ILogger<SendResetLinkEmailEventHandler> _logger;
     private readonly IMailService _mailService;
 
     public SendResetLinkEmailEventHandler(ILogger<SendResetLinkEmailEventHandler> logger, IMailService mailService,
-        IOptions<AppSettings> appSettings)
+       IOptions<AppSettings> appSettings)
     {
         _logger = logger;
         _mailService = mailService;
-        _appSettings = appSettings;
+        _appSettings = appSettings.Value;
     }
 
     public Task Handle(UserRequestedEmailChangeEvent notification, CancellationToken cancellationToken)
@@ -24,7 +24,7 @@ public class SendResetLinkEmailEventHandler : INotificationHandler<UserRequested
         _logger.LogInformation("Domain Event: {DomainEvent}", notification.GetType().Name);
 
         _mailService.SendAsync(notification.User.Email, $"Email Change Requested",
-            $"Please click here to change your email: " + _appSettings.Value.ChangeEmailUrl);
+            $"Please click here to change your email: " + _appSettings.ChangeEmailUrl);
 
         return Task.CompletedTask;
     }

@@ -5,19 +5,34 @@ namespace Application.Messages.Handlers;
 
 public class MqttMessageHandler : IMqttMessageHandler
 {
-    private readonly IMediator _mediator;
+    private readonly ISender _sender;
 
-    public MqttMessageHandler(IMediator mediator)
+    public MqttMessageHandler(ISender sender)
     {
-        _mediator = mediator;
+        _sender = sender;
     }
 
-    public Task HandleMessageAsync(string topic, string payload)
+    public async Task HandleMessageAsync(string topic, string payload)
     {
-        var parsedPayload = JsonSerializer.Deserialize<CreateEnvironmentInfoCommand>(payload);
+        try
+        {
+            var parsedPayload = JsonSerializer.Deserialize<CreateEnvironmentInfoCommand>(payload);
 
-        _mediator.Send(parsedPayload);
-        
-        return Task.CompletedTask;
+            var command = new CreateEnvironmentInfoCommand
+            {
+                AuthToken = parsedPayload.AuthToken,
+                Humidity = parsedPayload.Humidity,
+                LightLevel = parsedPayload.LightLevel,
+                RainLevel = parsedPayload.RainLevel,
+                Temperature = parsedPayload.Temperature
+            };
+
+            var res = await _sender.Send(command);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 }
