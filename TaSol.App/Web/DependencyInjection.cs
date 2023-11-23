@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Shared.Constants;
 using Shared.Settings;
 using Web.Common.Interfaces;
 using Web.Common.Services;
@@ -18,20 +17,11 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddConfiguration(this IServiceCollection services, IConfiguration configuration)
     {
-        var apiSettings = configuration.GetSection(SettingsSections.ApiSettings);
-        services.Configure<ApiSettings>(apiSettings);
-
-        var connectionStrings = configuration.GetSection(SettingsSections.ConnectionStrings);
-        services.Configure<ConnectionStrings>(connectionStrings);
-
-        var jwtSettings = configuration.GetSection(SettingsSections.JwtSettings);
-        services.Configure<JwtSettings>(jwtSettings);
-        
-        var appSettings = configuration.GetSection(SettingsSections.AppSettings);
-        services.Configure<AppSettings>(appSettings);
-        
-        var mqttSettings = configuration.GetSection(SettingsSections.MqttSettings);
-        services.Configure<MqttSettings>(mqttSettings);
+        services.ConfigureOption<ApiSettings>(configuration);
+        services.ConfigureOption<ConnectionStrings>(configuration);
+        services.ConfigureOption<JwtSettings>(configuration);
+        services.ConfigureOption<AppSettings>(configuration);
+        services.ConfigureOption<MqttSettings>(configuration);
 
         return services;
     }
@@ -142,7 +132,7 @@ public static class DependencyInjection
 
     private static void ConfigureJwtAuthentication(IServiceCollection services, IConfiguration configuration)
     {
-        var jwtSettings = configuration.GetSection(SettingsSections.JwtSettings).Get<JwtSettings>();
+        var jwtSettings = configuration.GetSettings<JwtSettings>();
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

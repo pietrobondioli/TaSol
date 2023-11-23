@@ -1,42 +1,52 @@
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Shared.Constants;
 
 namespace Shared.Settings;
 
 public static class SettingsExtensions
 {
-    public static ApiSettings GetApiSettings(this IConfiguration configuration)
+    
+    private static readonly Dictionary<string, string> SettingsSectionsMap = new()
     {
-        var apiSettings = configuration.GetSection(SettingsSections.ApiSettings);
-        
-        return apiSettings.Get<ApiSettings>();
+        {nameof(ApiSettings), SettingsSections.ApiSettings},
+        {nameof(ConnectionStrings), SettingsSections.ConnectionStrings},
+        {nameof(JwtSettings), SettingsSections.JwtSettings},
+        {nameof(AppSettings), SettingsSections.AppSettings},
+        {nameof(MqttSettings), SettingsSections.MqttSettings}
+    };
+    
+    public static T GetSettings<T>(this IConfiguration configuration) where T : class
+    {
+        var sectionName = typeof(T).Name;
+        var section = configuration.GetSection(sectionName);
+        if (section.Exists())
+        {
+            return section.Get<T>();
+        }
+
+        var sectionKey = SettingsSectionsMap[sectionName];
+        section = configuration.GetSection(sectionKey.ToString());
+        if (section.Exists())
+        {
+            return section.Get<T>();
+        }
+
+        return null;
     }
     
-    public static ConnectionStrings GetConnectionStrings(this IConfiguration configuration)
+    private static string GetSectionName<T>() where T : class
     {
-        var connectionStrings = configuration.GetSection(SettingsSections.ConnectionStrings);
-        
-        return connectionStrings.Get<ConnectionStrings>();
+        var sectionName = typeof(T).Name;
+        var sectionKey = SettingsSectionsMap[sectionName];
+        return sectionKey.ToString();
     }
-    
-    public static JwtSettings GetJwtSettings(this IConfiguration configuration)
+
+    public static void ConfigureOption<T>(this IServiceCollection services, IConfiguration configuration)
+        where T : class
     {
-        var jwtSettings = configuration.GetSection(SettingsSections.JwtSettings);
+        var settings = configuration.GetSection(GetSectionName<T>());
         
-        return jwtSettings.Get<JwtSettings>();
-    }
-    
-    public static AppSettings GetAppSettings(this IConfiguration configuration)
-    {
-        var appSettings = configuration.GetSection(SettingsSections.AppSettings);
-        
-        return appSettings.Get<AppSettings>();
-    }
-    
-    public static MqttSettings GetMqttSettings(this IConfiguration configuration)
-    {
-        var mqttSettings = configuration.GetSection(SettingsSections.MqttSettings);
-        
-        return mqttSettings.Get<MqttSettings>();
+        services.Configure<T>(settings);
     }
 }

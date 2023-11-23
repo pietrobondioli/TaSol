@@ -7,16 +7,16 @@ namespace Application.Users.EventHandlers.UserRequestedNewVerificationToken;
 
 public class SendTokenViaEmailEventHandler : INotificationHandler<UserRequestedNewVerificationTokenEvent>
 {
-    private readonly IOptions<AppSettings> _appSettings;
+    private readonly AppSettings _appSettings;
     private readonly ILogger<SendTokenViaEmailEventHandler> _logger;
     private readonly IMailService _mailService;
 
     public SendTokenViaEmailEventHandler(ILogger<SendTokenViaEmailEventHandler> logger, IMailService mailService,
-        IOptions<AppSettings> appSettings)
+       IOptions<AppSettings> appSettings)
     {
         _logger = logger;
         _mailService = mailService;
-        _appSettings = appSettings;
+        _appSettings = appSettings.Value;
     }
 
     public Task Handle(UserRequestedNewVerificationTokenEvent notification, CancellationToken cancellationToken)
@@ -24,7 +24,7 @@ public class SendTokenViaEmailEventHandler : INotificationHandler<UserRequestedN
         _logger.LogInformation("Domain Event: {DomainEvent}", notification.GetType().Name);
 
         _mailService.SendAsync(notification.User.Email, $"Verify your account",
-            $"Please click here to verify your account: " + _appSettings.Value.ConfirmAccountUrl);
+            $"Please click here to verify your account: " + _appSettings.ConfirmAccountUrl);
 
         return Task.CompletedTask;
     }
