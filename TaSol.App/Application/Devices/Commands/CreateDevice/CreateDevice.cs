@@ -20,11 +20,11 @@ public class CreateDeviceCommandHandler : IRequestHandler<CreateDeviceCommand, (
 
     private readonly IUser _user;
 
-    public CreateDeviceCommandHandler(IUser user, IApplicationDbContext context, ISecurityUtils securityUtils)
+    public CreateDeviceCommandHandler(IApplicationDbContext context, ISecurityUtils securityUtils,IUserFactory userFactory)
     {
         _context = context;
-        _user = user;
         _securityUtils = securityUtils;
+        _user = userFactory.CreateUser();
     }
 
     public async Task<(long, string)> Handle(CreateDeviceCommand request, CancellationToken cancellationToken)

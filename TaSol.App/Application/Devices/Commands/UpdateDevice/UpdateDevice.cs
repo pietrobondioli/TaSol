@@ -16,10 +16,10 @@ public class UpdateDeviceCommandHandler : IRequestHandler<UpdateDeviceCommand, l
     private readonly IApplicationDbContext _context;
     private readonly IUser _user;
 
-    public UpdateDeviceCommandHandler(IUser user, IApplicationDbContext context)
+    public UpdateDeviceCommandHandler(IApplicationDbContext context, IUserFactory userFactory)
     {
-        _user = user;
         _context = context;
+        _user = userFactory.CreateUser();
     }
 
     public async Task<long> Handle(UpdateDeviceCommand request, CancellationToken cancellationToken)

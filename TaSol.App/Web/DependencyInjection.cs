@@ -1,7 +1,11 @@
 using System.Text;
 using System.Text.Json;
 using Application.Common.Interfaces;
+using Application.Common.Services;
+using Application.Messages.Handlers;
 using Infrastructure.Data;
+using Infrastructure.Mail;
+using Infrastructure.Services;
 using Infrastructure.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
@@ -123,7 +127,14 @@ public static class DependencyInjection
 
     private static void ConfigureDIs(IServiceCollection services)
     {
-        services.AddScoped<IUser, CurrentUser>();
+        services.AddSingleton<IHttpUserFactory ,HttpUserFactory>();
+        services.AddSingleton<IMqttUserFactory ,MqttUserFactory>();
+        services.AddScoped<IUserFactory, ContextAwareUserFactory>();
+        
+        services.AddSingleton<IMqttMessageHandler, MqttMessageHandler>();
+        services.AddSingleton<IMqttService, MqttService>();
+        
+        services.AddScoped<IMailService, AwsMailService>();
 
         services.AddSingleton<ISecurityUtils, SecurityUtils>();
 

@@ -13,11 +13,11 @@ public class RegenerateAuthTokenCommandHandler : IRequestHandler<RegenerateAuthT
     private readonly ISecurityUtils _securityUtils;
     private readonly IUser _user;
 
-    public RegenerateAuthTokenCommandHandler(IUser user, IApplicationDbContext context, ISecurityUtils securityUtils)
+    public RegenerateAuthTokenCommandHandler(IApplicationDbContext context, ISecurityUtils securityUtils, IUserFactory userFactory)
     {
-        _user = user;
         _context = context;
         _securityUtils = securityUtils;
+        _user = userFactory.CreateUser();
     }
 
     public async Task<(long, string)> Handle(RegenerateAuthTokenCommand request, CancellationToken cancellationToken)

@@ -22,8 +22,6 @@ public static class DependencyInjection
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(PerformanceBehaviour<,>));
         });
 
-        services.AddSingleton<IMqttMessageHandler, MqttMessageHandler>();
-
         return services;
     }
 }

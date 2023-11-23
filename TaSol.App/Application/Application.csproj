@@ -26,6 +26,9 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Reference Include="Microsoft.AspNetCore.Http.Abstractions">
+          <HintPath>..\..\..\..\..\..\usr\share\dotnet\shared\Microsoft.AspNetCore.App\8.0.0\Microsoft.AspNetCore.Http.Abstractions.dll</HintPath>
+        </Reference>
         <Reference Include="Microsoft.Extensions.Logging.Abstractions">
             <HintPath>
                 ..\..\..\..\.nuget\packages\microsoft.aspnetcore.app.ref\7.0.12\ref\net7.0\Microsoft.Extensions.Logging.Abstractions.dll

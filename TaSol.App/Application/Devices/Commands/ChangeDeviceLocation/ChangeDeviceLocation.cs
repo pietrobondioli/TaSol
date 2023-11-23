@@ -14,10 +14,10 @@ public class ChangeDeviceLocationCommandHandler : IRequestHandler<ChangeDeviceLo
     private readonly IApplicationDbContext _context;
     private readonly IUser _user;
 
-    public ChangeDeviceLocationCommandHandler(IUser user, IApplicationDbContext context)
+    public ChangeDeviceLocationCommandHandler(IApplicationDbContext context, IUserFactory userFactory)
     {
-        _user = user;
         _context = context;
+        _user = userFactory.CreateUser();
     }
 
     public async Task<long> Handle(ChangeDeviceLocationCommand request, CancellationToken cancellationToken)

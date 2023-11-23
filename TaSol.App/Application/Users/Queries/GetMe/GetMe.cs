@@ -14,11 +14,11 @@ public class GetMeQueryHandler : IRequestHandler<GetMeQuery, GetMeDto>
     private readonly IMapper _mapper;
     private readonly IUser _user;
 
-    public GetMeQueryHandler(IApplicationDbContext context, IMapper mapper, IUser user)
+    public GetMeQueryHandler(IApplicationDbContext context, IMapper mapper, IUserFactory userFactory)
     {
         _context = context;
         _mapper = mapper;
-        _user = user;
+        _user = userFactory.CreateUser();
     }
 
     public async Task<GetMeDto> Handle(GetMeQuery request, CancellationToken cancellationToken)
