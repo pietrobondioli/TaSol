@@ -2,6 +2,7 @@ using Application.Common.Interfaces;
 using Infrastructure.Data;
 using Infrastructure.Data.Interceptors;
 using Infrastructure.Logging;
+using Infrastructure.Mail;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -24,6 +25,8 @@ public static class DependencyInjection
         IConfiguration configuration, IWebHostEnvironment env)
     {
         services.AddSingleton<IMqttService, MqttService>();
+        
+        services.AddScoped<IMailService, AwsMailService>();
 
         ConfigureDatabase(services, configuration, env);
 
