@@ -1,5 +1,6 @@
 using System.Reflection;
 using Application.Common.Behaviours;
+using Application.Messages.Handlers;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Application;
@@ -20,6 +21,8 @@ public static class DependencyInjection
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(PerformanceBehaviour<,>));
         });
+
+        services.AddSingleton<IMqttMessageHandler, MqttMessageHandler>();
 
         return services;
     }

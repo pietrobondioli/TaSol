@@ -2,6 +2,7 @@ using Application.Common.Interfaces;
 using Infrastructure.Data;
 using Infrastructure.Data.Interceptors;
 using Infrastructure.Logging;
+using Infrastructure.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -21,6 +22,18 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services,
         IConfiguration configuration, IWebHostEnvironment env)
+    {
+        services.AddSingleton<IMqttService, MqttService>();
+
+        ConfigureDatabase(services, configuration, env);
+
+        ConfigureSerilog(services, configuration, env);
+
+        return services;
+    }
+
+    private static void ConfigureDatabase(IServiceCollection services, IConfiguration configuration,
+        IWebHostEnvironment env)
     {
         var connectionStrings = configuration.GetSection(SettingsSections.ConnectionStrings).Get<ConnectionStrings>();
 
@@ -47,10 +60,6 @@ public static class DependencyInjection
         services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
 
         services.AddScoped<ApplicationDbContextInitialiser>();
-
-        ConfigureSerilog(services, configuration, env);
-
-        return services;
     }
 
     private static void ConfigureSerilog(IServiceCollection services, IConfiguration configuration,
