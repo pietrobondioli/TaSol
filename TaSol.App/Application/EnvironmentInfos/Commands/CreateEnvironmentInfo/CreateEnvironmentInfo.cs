@@ -6,11 +6,11 @@ public record CreateEnvironmentInfoCommand : IRequest<long>
 {
     public double Temperature { get; init; }
 
-    public int Humidity { get; init; }
+    public double Humidity { get; init; }
 
-    public int LightLevel { get; init; }
+    public double LightLevel { get; init; }
 
-    public int RainLevel { get; init; }
+    public double RainLevel { get; init; }
 
     public string AuthToken { get; init; } = null!;
 }

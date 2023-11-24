@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Infrastructure.Migrations
+namespace Infrastructure.Data.Migrations
 {
     /// <inheritdoc />
     public partial class Initial : Migration
@@ -340,9 +340,9 @@ namespace Infrastructure.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Temperature = table.Column<double>(type: "float", nullable: false),
-                    Humidity = table.Column<int>(type: "int", nullable: false),
-                    LightLevel = table.Column<int>(type: "int", nullable: false),
-                    RainLevel = table.Column<int>(type: "int", nullable: false),
+                    Humidity = table.Column<double>(type: "float", nullable: false),
+                    LightLevel = table.Column<double>(type: "float", nullable: false),
+                    RainLevel = table.Column<double>(type: "float", nullable: false),
                     TimeStamp = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     DeviceId = table.Column<long>(type: "bigint", nullable: false),
                     LocationId = table.Column<long>(type: "bigint", nullable: false)
@@ -511,17 +511,11 @@ namespace Infrastructure.Migrations
                 name: "IX_Users_MetadataId",
                 table: "Users",
                 column: "MetadataId");
-            
-            migrationBuilder.Sql("CREATE FULLTEXT CATALOG ftCatalog AS DEFAULT;", true);
-            migrationBuilder.Sql("CREATE FULLTEXT INDEX ON dbo.Locations(Name, Description, Address, City, State, Country, Latitude, Longitude) KEY INDEX PK_Locations ON ftCatalog;", true);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.Sql("DROP FULLTEXT INDEX ON Locations;", true);
-            migrationBuilder.Sql("DROP FULLTEXT CATALOG ftCatalog;", true);
-            
             migrationBuilder.DropTable(
                 name: "EnvironmentInfos");
 

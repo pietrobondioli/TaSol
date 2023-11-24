@@ -9,10 +9,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Infrastructure.Migrations
+namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231122190520_Initial")]
+    [Migration("20231124003938_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -101,17 +101,17 @@ namespace Infrastructure.Migrations
                     b.Property<long>("DeviceId")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("Humidity")
-                        .HasColumnType("int");
+                    b.Property<double>("Humidity")
+                        .HasColumnType("float");
 
-                    b.Property<int>("LightLevel")
-                        .HasColumnType("int");
+                    b.Property<double>("LightLevel")
+                        .HasColumnType("float");
 
                     b.Property<long>("LocationId")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("RainLevel")
-                        .HasColumnType("int");
+                    b.Property<double>("RainLevel")
+                        .HasColumnType("float");
 
                     b.Property<double>("Temperature")
                         .HasColumnType("float");

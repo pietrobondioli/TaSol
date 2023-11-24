@@ -13,9 +13,4 @@ public class UserMetadata : BaseEntity
     public DateTimeOffset? LastLockout { get; set; }
 
     public DateTimeOffset? LastChangedEmail { get; set; }
-
-    public long UserId { get; set; }
-
-    [ForeignKey(nameof(UserId))]
-    public virtual User User { get; set; } = null!;
 }
