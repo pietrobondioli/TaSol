@@ -9,13 +9,13 @@ public class EnvironmentInfo : BaseEntity
     public double Temperature { get; set; }
 
     [Required]
-    public int Humidity { get; set; }
+    public double Humidity { get; set; }
 
     [Required]
-    public int LightLevel { get; set; }
+    public double LightLevel { get; set; }
 
     [Required]
-    public int RainLevel { get; set; }
+    public double RainLevel { get; set; }
 
     [Required]
     public DateTimeOffset TimeStamp { get; set; } = DateTimeOffset.UtcNow;

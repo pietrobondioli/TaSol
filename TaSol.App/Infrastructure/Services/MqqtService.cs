@@ -22,6 +22,8 @@ public class MqttService : IMqttService
         {
             var payload = Encoding.UTF8.GetString(e.ApplicationMessage.Payload);
 
+            Console.WriteLine($"Topic: {e.ApplicationMessage.Topic}. Message Received: {payload}");
+
             await mqttMessageHandler.HandleMessageAsync(e.ApplicationMessage.Topic, payload);
         };
     }
