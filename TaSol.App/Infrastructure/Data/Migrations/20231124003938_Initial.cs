@@ -511,11 +511,17 @@ namespace Infrastructure.Data.Migrations
                 name: "IX_Users_MetadataId",
                 table: "Users",
                 column: "MetadataId");
+            
+            migrationBuilder.Sql("CREATE FULLTEXT CATALOG ftCatalog AS DEFAULT;", true);
+            migrationBuilder.Sql("CREATE FULLTEXT INDEX ON dbo.Locations(Name, Description, Address, City, State, Country, Latitude, Longitude) KEY INDEX PK_Locations ON ftCatalog;", true);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.Sql("DROP FULLTEXT INDEX ON Locations;", true);
+            migrationBuilder.Sql("DROP FULLTEXT CATALOG ftCatalog;", true);
+            
             migrationBuilder.DropTable(
                 name: "EnvironmentInfos");
 
